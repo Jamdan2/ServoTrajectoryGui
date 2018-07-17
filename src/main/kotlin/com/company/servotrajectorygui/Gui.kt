@@ -18,6 +18,9 @@ class MainView : View() {
             addClass(Style.wrapper)
             button {
                 text = "Reset servo"
+                action {
+                    link.setServoAngle(0)
+                }
             }
             button {
                 text = "Run trajectory"
