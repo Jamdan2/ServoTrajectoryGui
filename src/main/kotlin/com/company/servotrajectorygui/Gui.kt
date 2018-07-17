@@ -1,7 +1,9 @@
 package com.company.servotrajectorygui
 
+import javafx.event.EventHandler
 import javafx.stage.Stage
 import tornadofx.*
+import kotlin.concurrent.thread
 
 class Gui : App(MainView::class, Style::class) {
     override fun start(stage: Stage) {
@@ -24,6 +26,14 @@ class MainView : View() {
             }
             button {
                 text = "Run trajectory"
+                action {
+                    thread {
+                        trajectory.distancePoints.iterator().forEach {
+                            link.setServoAngle(it)
+                        }
+                        Thread.sleep(1)
+                    }
+                }
             }
         }
         vbox {
@@ -37,28 +47,35 @@ class MainView : View() {
                     majorTickUnit = 15.0
                     isShowTickMarks = true
                     isShowTickLabels = true
+                    onMouseReleased = EventHandler {
+                        setDistance(value.toInt())
+                    }
                 }
             }
             vbox {
                 label("Max Velocity")
                 slider {
                     min = 0.0
-                    max = 180.0
-                    minorTickCount = 30
-                    majorTickUnit = 15.0
+                    max = 1.0
+                    minorTickCount = 100
                     isShowTickMarks = true
                     isShowTickLabels = true
+                    onMouseReleased = EventHandler {
+                        setVelocity(value)
+                    }
                 }
             }
             vbox {
                 label("Max Acceleration")
                 slider {
                     min = 0.0
-                    max = 180.0
-                    minorTickCount = 30
-                    majorTickUnit = 15.0
+                    max = 0.1
+                    minorTickCount = 100
                     isShowTickMarks = true
                     isShowTickLabels = true
+                    valueProperty().addListener { _, _, newValue ->
+                        setAcceleration(value)
+                    }
                 }
             }
         }
