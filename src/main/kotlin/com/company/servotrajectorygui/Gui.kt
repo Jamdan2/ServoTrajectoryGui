@@ -12,10 +12,6 @@ class Gui : App(MainView::class, Style::class) {
     }
 }
 
-var distanceSliderValue = 0
-var velocitySliderValue = 0.0
-var accelerationSliderValue = 0.0
-
 class MainView : View() {
     override val root = vbox {
         title = "Servo Trajectory Gui"
@@ -43,17 +39,14 @@ class MainView : View() {
         vbox {
             addClass(Style.wrapper)
             vbox {
-                val distanceLabel = label("Distance: $distanceSliderValue")
-                slider {
-                    min = 0.0
-                    max = 180.0
-                    minorTickCount = 30
+                val distanceLabel = label("Distance: 90")
+                slider(0, 180, 90) {
+                    minorTickCount = 15
                     majorTickUnit = 15.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
-                        distanceSliderValue = newValue.toInt()
-                        distanceLabel.text = "Distance: $distanceSliderValue"
+                        distanceLabel.text = "Distance: ${newValue.toInt()}"
                     }
                     onMouseReleased = EventHandler {
                         setDistance(value.toInt())
@@ -61,16 +54,14 @@ class MainView : View() {
                 }
             }
             vbox {
-                val velocityLabel = label("Max Velocity: $velocitySliderValue")
-                slider {
-                    min = 0.0
-                    max = 1.0
-                    minorTickCount = 100
+                val velocityLabel = label("Max Velocity: 0.5")
+                slider(0, 1, 0.5) {
+                    minorTickCount = 10
+                    majorTickUnit = 0.1
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
-                        velocitySliderValue = newValue.toDouble()
-                        velocityLabel.text = "Max Velocity: $velocitySliderValue"
+                        velocityLabel.text = "Max Velocity: ${newValue.toDouble()}"
                     }
                     onMouseReleased = EventHandler {
                         setVelocity(value)
@@ -78,19 +69,14 @@ class MainView : View() {
                 }
             }
             vbox {
-                val accelerationLabel = label("Max Acceleration: $accelerationSliderValue")
-                slider {
-                    min = 0.0
-                    max = 0.1
-                    minorTickCount = 100
+                val accelerationLabel = label("Max Acceleration: 0.005")
+                slider(0, 0.01, 0.005) {
+                    minorTickCount = 10
+                    majorTickUnit = 0.001
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
-                        setAcceleration(value)
-                    }
-                    valueProperty().addListener { _, _, newValue ->
-                        accelerationSliderValue = newValue.toDouble()
-                        accelerationLabel.text = "Max Acceleration: $accelerationSliderValue"
+                        accelerationLabel.text = "Max Acceleration: ${newValue.toDouble()}"
                     }
                     onMouseReleased = EventHandler {
                         setAcceleration(value)
