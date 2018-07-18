@@ -30,8 +30,8 @@ class MainView : View() {
                     thread {
                         trajectory.distancePoints.iterator().forEach {
                             link.setServoAngle(it)
+                            Thread.sleep(1)
                         }
-                        Thread.sleep(1)
                     }
                 }
             }
