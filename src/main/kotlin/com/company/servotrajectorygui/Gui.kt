@@ -3,7 +3,6 @@ package com.company.servotrajectorygui
 import javafx.event.EventHandler
 import javafx.stage.Stage
 import tornadofx.*
-import kotlin.concurrent.thread
 
 class Gui : App(MainView::class, Style::class) {
     override fun start(stage: Stage) {
@@ -27,11 +26,9 @@ class MainView : View() {
             button {
                 text = "Run trajectory"
                 action {
-                    thread {
-                        trajectory.distancePoints.iterator().forEach {
-                            link.setServoAngle(it)
-                            Thread.sleep(1)
-                        }
+                    trajectory.distancePoints.iterator().forEach {
+                        link.setServoAngle(it)
+                        Thread.sleep(1)
                     }
                 }
             }
