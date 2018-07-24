@@ -37,8 +37,6 @@ class Trajectory(config: TrajectoryConfig) {
     var isValid = true
         private set
 
-    val distancePoints = mutableListOf<Double>()
-
     init {
         if (
                 config.distance < 0 ||
@@ -88,6 +86,24 @@ class Trajectory(config: TrajectoryConfig) {
     private fun j5() = -j
     private fun j6() = 0.0
     private fun j7() = j
+    private fun j(t: Long) = when {
+        t < 0 -> throw IllegalArgumentException("t cannot be negative")
+        t <= t1 -> j1()
+        t <= t2 -> j2()
+        t <= t3 -> j3()
+        t <= t4 -> j4()
+        t <= t5 -> j5()
+        t <= t6 -> j6()
+        t <= t7 -> j7()
+        else -> throw IllegalArgumentException("t cannot be greater than t7")
+    }
+
+    val jerkPoints = mutableListOf<Double>()
+
+    fun calculateJerkPoints() {
+        jerkPoints.clear()
+        (0..t7).forEach { jerkPoints.add(j(it)) }
+    }
 
     // acceleration functions
     private fun a1(t: Long) = j1() * t
@@ -97,6 +113,24 @@ class Trajectory(config: TrajectoryConfig) {
     private fun a5(t: Long) = j5() * (t - t4)
     private fun a6() = -a
     private fun a7(t: Long) = a6() + j7() * (t - t6)
+    private fun a(t: Long) = when {
+        t < 0 -> throw IllegalArgumentException("t cannot be negative")
+        t <= t1 -> a1(t)
+        t <= t2 -> a2()
+        t <= t3 -> a3(t)
+        t <= t4 -> a4()
+        t <= t5 -> a5(t)
+        t <= t6 -> a6()
+        t <= t7 -> a7(t)
+        else -> throw IllegalArgumentException("t cannot be greater than t7")
+    }
+
+    val accelerationPoints = mutableListOf<Double>()
+
+    fun calculateAccelerationPoints() {
+        accelerationPoints.clear()
+        (0..t7).forEach { accelerationPoints.add(a(it)) }
+    }
 
     // velocity functions
     private fun v1(t: Long) = 0.5 * j1() * t.toDouble().pow(2)
@@ -106,6 +140,24 @@ class Trajectory(config: TrajectoryConfig) {
     private fun v5(t: Long) = v4() + a4() * (t - t4) + 0.5 * j5() * (t - t4).toDouble().pow(2)
     private fun v6(t: Long) = v5(t5) + a5(t5) * (t - t5)
     private fun v7(t: Long) = v6(t6) + a6() * (t - t6) + 0.5 * j7() * (t - t6).toDouble().pow(2)
+    private fun v(t: Long) = when {
+        t < 0 -> throw IllegalArgumentException("t cannot be negative")
+        t <= t1 -> v1(t)
+        t <= t2 -> v2(t)
+        t <= t3 -> v3(t)
+        t <= t4 -> v4()
+        t <= t5 -> v5(t)
+        t <= t6 -> v6(t)
+        t <= t7 -> v7(t)
+        else -> throw IllegalArgumentException("t cannot be greater than t7")
+    }
+
+    val velocityPoints = mutableListOf<Double>()
+
+    fun calculateVelocityPoints() {
+        velocityPoints.clear()
+        (0..t7).forEach { velocityPoints.add(v(it)) }
+    }
 
     // distance functions
     private fun d1(t: Long) = (1 / 6) * j1() * t.toDouble().pow(3)
@@ -115,8 +167,6 @@ class Trajectory(config: TrajectoryConfig) {
     private fun d5(t: Long) = d4(t4) + v4() * (t - t4) + 0.5 * a4() * (t - t4).toDouble().pow(2) + (1 / 6) * j5() * (t - t4).toDouble().pow(3)
     private fun d6(t: Long) = d5(t5) + v5(t5) * (t - t5) + 0.5 * a5(t5) * (t - t5).toDouble().pow(2)
     private fun d7(t: Long) = d6(t6) + v6(t6) * (t - t6) + 0.5 * a6() * (t - t6).toDouble().pow(2) + (1 / 6) * j7() * (t - t6).toDouble().pow(3)
-
-    // final distance function
     private fun d(t: Long) = when {
         t < 0 -> throw IllegalArgumentException("t cannot be negative")
         t <= t1 -> d1(t)
@@ -128,6 +178,8 @@ class Trajectory(config: TrajectoryConfig) {
         t <= t7 -> d7(t)
         else -> throw IllegalArgumentException("t cannot be greater than t7")
     }
+
+    val distancePoints = mutableListOf<Double>()
 
     fun calculateDistancePoints() {
         distancePoints.clear()
