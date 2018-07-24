@@ -3,6 +3,7 @@ package com.company.servotrajectorygui
 import javafx.event.EventHandler
 import javafx.stage.Stage
 import tornadofx.*
+import kotlin.math.roundToInt
 
 class Gui : App(MainView::class, Style::class) {
     override fun start(stage: Stage) {
@@ -24,12 +25,20 @@ class MainView : View() {
                 }
             }
             button {
+                text = "Calculate trajectory"
+                action {
+                    reinitializeTrajectory()
+                    trajectory.calculateDistancePoints()
+                    if (!trajectory.isValid) warning("trajectory is invalid")
+                }
+            }
+            button {
                 text = "Run trajectory"
                 action {
-                    trajectory.distancePoints.iterator().forEach {
-                        link.setServoAngle(it)
+                    if (trajectory.isValid) trajectory.distancePoints.iterator().forEach {
+                        link.setServoAngle(it.roundToInt())
                         Thread.sleep(1)
-                    }
+                    } else error("trajectory is invalid")
                 }
             }
         }
@@ -77,6 +86,21 @@ class MainView : View() {
                     }
                     onMouseReleased = EventHandler {
                         setAcceleration(value)
+                    }
+                }
+            }
+            vbox {
+                val jerkLabel = label("Max Jerk: 0.005")
+                slider(0, 0.01, 0.005) {
+                    minorTickCount = 10
+                    majorTickUnit = 0.1
+                    isShowTickMarks = true
+                    isShowTickLabels = true
+                    valueProperty().addListener { _, _, newValue ->
+                        jerkLabel.text = "Max Jerk: ${newValue.toDouble()}"
+                    }
+                    onMouseReleased = EventHandler {
+                        setJerk(value)
                     }
                 }
             }
