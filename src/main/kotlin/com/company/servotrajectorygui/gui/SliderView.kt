@@ -6,6 +6,8 @@ import com.company.servotrajectorygui.trajectory.TrajectoryConfig
 import com.company.servotrajectorygui.trajectory.trajectory
 import com.company.servotrajectorygui.trajectory.trajectoryConfig
 import com.sun.org.apache.bcel.internal.Repository.addClass
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import tornadofx.*
 import tornadofx.Stylesheet.Companion.label
 import tornadofx.Stylesheet.Companion.slider
@@ -25,30 +27,34 @@ class SliderView : View() {
             button {
                 text = "Calculate trajectory"
                 action {
-                    trajectory = Trajectory(trajectoryConfig)
-                    trajectory.calculateDistancePoints()
-                    trajectory.calculateVelocityPoints()
-                    trajectory.calculateAccelerationPoints()
-                    trajectory.calculateJerkPoints()
-                    if (!trajectory.isValid) {
-                        warning(
-                                "trajectory is invalid",
-                                trajectory.problems.joinToString(",\n")
-                        )
+                    launch {
+                        trajectory = Trajectory(trajectoryConfig)
+                        launch { trajectory.calculateDistancePoints() }
+                        launch { trajectory.calculateVelocityPoints() }
+                        launch { trajectory.calculateAccelerationPoints() }
+                        launch { trajectory.calculateJerkPoints() }
+                        if (!trajectory.isValid) {
+                            warning(
+                                    "trajectory is invalid",
+                                    trajectory.problems.joinToString(",\n")
+                            )
+                        }
+                        fire(TrajectoryRecalculated)
                     }
-                    fire(TrajectoryRecalculated)
                 }
             }
             button {
                 text = "Run trajectory"
                 action {
-                    if (trajectory.isValid) trajectory.distancePoints.iterator().forEach {
-                        link.setServoAngle(it.roundToInt())
-                        Thread.sleep(1)
-                    } else error(
-                            "trajectory is invalid",
-                            trajectory.problems.joinToString(",\n")
-                    )
+                    launch {
+                        if (trajectory.isValid) trajectory.distancePoints.iterator().forEach {
+                            link.setServoAngle(it.roundToInt())
+                            delay(1)
+                        } else error(
+                                "trajectory is invalid",
+                                trajectory.problems.joinToString(",\n")
+                        )
+                    }
                 }
             }
         }
