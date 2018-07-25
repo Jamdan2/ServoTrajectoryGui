@@ -8,6 +8,7 @@ class GraphView : View() {
     override val root = vbox {
         hbox {
             scatterchart("Distance", NumberAxis(), NumberAxis()) {
+                addClass(Style.distanceChart)
                 setPrefSize(250.0, 250.0)
                 series("Distance") {
                     trajectory.calculateDistancePoints()
@@ -23,6 +24,7 @@ class GraphView : View() {
                 }
             }
             scatterchart("Velocity", NumberAxis(), NumberAxis()) {
+                addClass(Style.velocityChart)
                 setPrefSize(250.0, 250.0)
                 series("Velocity") {
                     trajectory.calculateVelocityPoints()
@@ -40,6 +42,7 @@ class GraphView : View() {
         }
         hbox {
             scatterchart("Acceleration", NumberAxis(), NumberAxis()) {
+                addClass(Style.accelerationChart)
                 setPrefSize(250.0, 250.0)
                 series("Acceleration") {
                     trajectory.calculateAccelerationPoints()
@@ -55,6 +58,7 @@ class GraphView : View() {
                 }
             }
             scatterchart("Jerk", NumberAxis(), NumberAxis()) {
+                addClass(Style.jerkChart)
                 setPrefSize(250.0, 250.0)
                 series("Jerk") {
                     trajectory.calculateJerkPoints()

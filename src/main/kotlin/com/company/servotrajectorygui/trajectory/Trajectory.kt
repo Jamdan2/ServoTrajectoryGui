@@ -39,7 +39,7 @@ class Trajectory(config: TrajectoryConfig) {
     private val d = config.distance
     private val vm = config.maxVelocity
     private val am = config.maxAcceleration
-    private val j = config.maxAcceleration
+    private val j = config.maxJerk
     private val v = min(
             vm,
             if (am > ((j.pow(2) * d) / 2).root(3)) {
