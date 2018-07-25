@@ -2,27 +2,12 @@ package com.company.servotrajectorygui
 
 import kotlin.math.*
 
-fun setDistance(distance: Int) {
-    trajectoryConfig = TrajectoryConfig(distance, trajectoryConfig.maxVelocity, trajectoryConfig.maxAcceleration, trajectoryConfig.maxJerk)
-}
-
-fun setVelocity(velocity: Double) {
-    trajectoryConfig = TrajectoryConfig(trajectoryConfig.distance, velocity, trajectoryConfig.maxAcceleration, trajectoryConfig.maxJerk)
-}
-
-fun setAcceleration(acceleration: Double) {
-    trajectoryConfig = TrajectoryConfig(trajectoryConfig.distance, trajectoryConfig.maxVelocity, acceleration, trajectoryConfig.maxJerk)
-}
-
-fun setJerk(jerk: Double) {
-    trajectoryConfig = TrajectoryConfig(trajectoryConfig.distance, trajectoryConfig.maxVelocity, trajectoryConfig.maxAcceleration, jerk)
-}
-
-fun reinitializeTrajectory() {
-    trajectory = Trajectory(trajectoryConfig)
-}
-
-var trajectoryConfig = TrajectoryConfig(90, 0.5, 0.005, 0.005)
+var trajectoryConfig = TrajectoryConfig(
+        INITIAL_DISTANCE,
+        INITIAL_VELOCITY,
+        INITIAL_ACCELERATION,
+        INITIAL_JERK
+)
 
 var trajectory = Trajectory(trajectoryConfig)
 
