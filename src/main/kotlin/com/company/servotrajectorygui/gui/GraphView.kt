@@ -1,6 +1,6 @@
 package com.company.servotrajectorygui.gui
 
-import com.company.servotrajectorygui.trajectory
+import com.company.servotrajectorygui.trajectory.trajectory
 import javafx.scene.chart.NumberAxis
 import tornadofx.*
 
@@ -17,7 +17,7 @@ class GraphView : View() {
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
                         trajectory.distancePoints.forEachIndexed { index, value ->
-                            data(index, value)
+                            data(index / 1000.0, value)
                         }
                     }
                 }
@@ -32,7 +32,7 @@ class GraphView : View() {
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
                         trajectory.velocityPoints.forEachIndexed { index, value ->
-                            data(index, value)
+                            data(index / 1000.0, value)
                         }
                     }
                 }
@@ -49,7 +49,7 @@ class GraphView : View() {
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
                         trajectory.accelerationPoints.forEachIndexed { index, value ->
-                            data(index, value)
+                            data(index / 1000.0, value)
                         }
                     }
                 }
@@ -64,7 +64,7 @@ class GraphView : View() {
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
                         trajectory.jerkPoints.forEachIndexed { index, value ->
-                            data(index, value)
+                            data(index / 1000.0, value)
                         }
                     }
                 }

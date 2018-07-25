@@ -1,5 +1,6 @@
-package com.company.servotrajectorygui
+package com.company.servotrajectorygui.trajectory
 
+import com.company.servotrajectorygui.*
 import kotlin.math.*
 
 var trajectoryConfig = TrajectoryConfig(
@@ -36,41 +37,45 @@ class Trajectory(config: TrajectoryConfig) {
     }
 
     private val d = config.distance
+    private val vm = config.maxVelocity
+    private val am = config.maxAcceleration
+    private val j = config.maxAcceleration
     private val v = min(
-            config.maxVelocity,
-            if (config.maxAcceleration > (((config.maxJerk.pow(2)) * config.distance)/2).root(3)) {
-                (((((config.maxJerk.pow(2)) * config.distance) / 2).root(3)).pow(2)) / config.maxJerk
+            vm,
+            if (am > ((j.pow(2) * d) / 2).root(3)) {
+                ((j.pow(2) * d) / 2).root(3).pow(2) / j
             } else {
-                (-(config.maxAcceleration.pow(2)) + sqrt((config.maxAcceleration.pow(4)) + (4 * (config.maxJerk.pow(2)) * config.distance * config.maxAcceleration))) / (2 * config.maxJerk)
+                (-am.pow(2) + sqrt(am.pow(4) + 4 * j.pow(2) * d * am)) / (2 * j)
             }
     )
     private val a = min(
-            config.maxAcceleration,
-            if (config.maxVelocity > (((((config.maxJerk.pow(2)) * config.distance) / 2).root(3)).pow(2)) / config.maxJerk) {
-                (((config.maxJerk.pow(2)) * config.distance) / 2).root(3)
+            am,
+            if (vm > ((j.pow(2) * d) / 2).root(3).pow(2) / j) {
+                ((j.pow(2) * d) / 2).root(3)
             } else {
-                sqrt(config.maxVelocity * config.maxJerk)
+                sqrt(vm * j)
             }
     )
-    private val j = config.maxAcceleration
 
-    // time constants
-    private val t1 = (a / j).toLong()
-    private val t2 = (v / a).toLong()
+    private val t1 = a / j
+    private val t2 = v / a
     private val t3 = t1 + t2
-    private val t4 = (d / v).toLong()
+    private val t4 = d / v
     private val t5 = t1 + t4
     private val t6 = t2 + t4
     private val t7 = t3 + t4
 
     init {
-        if (t2 - t1 < 0 || t4 - t2 - t1 < 0) {
-            isValid = false
-            problems.add("time constants are invalid")
-        }
+        if (
+                t2.roundTo(4) - t1.roundTo(4) < 0
+                || t4.roundTo(4) - t3.roundTo(4) < 0
+        ) isValid = false
+        if (t2.roundTo(4) - t1.roundTo(4) < 0)
+            problems.add("t2 is less than t1, t1=$t1, t2=$t2")
+        if (t4.roundTo(4) - t3.roundTo(4) < 0)
+            problems.add("t4 is less than t3, t3=$t3, t4=$t4")
     }
 
-    // jerk functions
     private fun j1() = j
     private fun j2() = 0.0
     private fun j3() = -j
@@ -78,7 +83,7 @@ class Trajectory(config: TrajectoryConfig) {
     private fun j5() = -j
     private fun j6() = 0.0
     private fun j7() = j
-    private fun j(t: Long) = when {
+    private fun j(t: Double) = when {
         t < 0 -> throw IllegalArgumentException("t cannot be negative")
         t <= t1 -> j1()
         t <= t2 -> j2()
@@ -94,18 +99,19 @@ class Trajectory(config: TrajectoryConfig) {
 
     fun calculateJerkPoints() {
         jerkPoints.clear()
-        (0..t7).forEach { jerkPoints.add(j(it)) }
+        virtualSecondsTimer(t7) {
+            jerkPoints.add(j(it))
+        }
     }
 
-    // acceleration functions
-    private fun a1(t: Long) = j1() * t
+    private fun a1(t: Double) = j1() * t
     private fun a2() = a
-    private fun a3(t: Long) = a2() + j3() * (t - t2)
+    private fun a3(t: Double) = a2() + j3() * (t - t2)
     private fun a4() = 0.0
-    private fun a5(t: Long) = j5() * (t - t4)
+    private fun a5(t: Double) = j5() * (t - t4)
     private fun a6() = -a
-    private fun a7(t: Long) = a6() + j7() * (t - t6)
-    private fun a(t: Long) = when {
+    private fun a7(t: Double) = a6() + j7() * (t - t6)
+    private fun a(t: Double) = when {
         t < 0 -> throw IllegalArgumentException("t cannot be negative")
         t <= t1 -> a1(t)
         t <= t2 -> a2()
@@ -121,18 +127,19 @@ class Trajectory(config: TrajectoryConfig) {
 
     fun calculateAccelerationPoints() {
         accelerationPoints.clear()
-        (0..t7).forEach { accelerationPoints.add(a(it)) }
+        virtualSecondsTimer(t7) {
+            accelerationPoints.add(a(it))
+        }
     }
 
-    // velocity functions
-    private fun v1(t: Long) = 0.5 * j1() * t.toDouble().pow(2)
-    private fun v2(t: Long) = v1(t1) + a1(t1) * (t - t1)
-    private fun v3(t: Long) = v2(t2) + a2() * (t - t2) + 0.5 * j3() * (t - t2).toDouble().pow(2)
+    private fun v1(t: Double) = 0.5 * j1() * t.pow(2)
+    private fun v2(t: Double) = v1(t1) + a1(t1) * (t - t1)
+    private fun v3(t: Double) = v2(t2) + a2() * (t - t2) + 0.5 * j3() * (t - t2).pow(2)
     private fun v4() = v
-    private fun v5(t: Long) = v4() + a4() * (t - t4) + 0.5 * j5() * (t - t4).toDouble().pow(2)
-    private fun v6(t: Long) = v5(t5) + a5(t5) * (t - t5)
-    private fun v7(t: Long) = v6(t6) + a6() * (t - t6) + 0.5 * j7() * (t - t6).toDouble().pow(2)
-    private fun v(t: Long) = when {
+    private fun v5(t: Double) = v4() + a4() * (t - t4) + 0.5 * j5() * (t - t4).pow(2)
+    private fun v6(t: Double) = v5(t5) + a5(t5) * (t - t5)
+    private fun v7(t: Double) = v6(t6) + a6() * (t - t6) + 0.5 * j7() * (t - t6).pow(2)
+    private fun v(t: Double) = when {
         t < 0 -> throw IllegalArgumentException("t cannot be negative")
         t <= t1 -> v1(t)
         t <= t2 -> v2(t)
@@ -148,18 +155,19 @@ class Trajectory(config: TrajectoryConfig) {
 
     fun calculateVelocityPoints() {
         velocityPoints.clear()
-        (0..t7).forEach { velocityPoints.add(v(it)) }
+        virtualSecondsTimer(t7) {
+            velocityPoints.add(v(it))
+        }
     }
 
-    // distance functions
-    private fun d1(t: Long) = (1 / 6) * j1() * t.toDouble().pow(3)
-    private fun d2(t: Long) = d1(t1) + v1(t1) * (t - t1) + 0.5 * a1(t1) * (t - t1).toDouble().pow(2)
-    private fun d3(t: Long) = d2(t2) + v2(t2) * (t - t2) + 0.5 * a2() * (t - t2).toDouble().pow(2) + (1 / 6) * j3() * (t - t2).toDouble().pow(3)
-    private fun d4(t: Long) = d3(t3) + v3(t3) * (t - t3)
-    private fun d5(t: Long) = d4(t4) + v4() * (t - t4) + 0.5 * a4() * (t - t4).toDouble().pow(2) + (1 / 6) * j5() * (t - t4).toDouble().pow(3)
-    private fun d6(t: Long) = d5(t5) + v5(t5) * (t - t5) + 0.5 * a5(t5) * (t - t5).toDouble().pow(2)
-    private fun d7(t: Long) = d6(t6) + v6(t6) * (t - t6) + 0.5 * a6() * (t - t6).toDouble().pow(2) + (1 / 6) * j7() * (t - t6).toDouble().pow(3)
-    private fun d(t: Long) = when {
+    private fun d1(t: Double) = (1.0 / 6.0) * j1() * t.pow(3)
+    private fun d2(t: Double) = d1(t1) + v1(t1) * (t - t1) + 0.5 * a1(t1) * (t - t1).pow(2)
+    private fun d3(t: Double) = d2(t2) + v2(t2) * (t - t2) + 0.5 * a2() * (t - t2).pow(2) + (1.0 / 6.0) * j3() * (t - t2).pow(3)
+    private fun d4(t: Double) = d3(t3) + v3(t3) * (t - t3)
+    private fun d5(t: Double) = d4(t4) + v4() * (t - t4) + 0.5 * a4() * (t - t4).pow(2) + (1.0 / 6.0) * j5() * (t - t4).pow(3)
+    private fun d6(t: Double) = d5(t5) + v5(t5) * (t - t5) + 0.5 * a5(t5) * (t - t5).pow(2)
+    private fun d7(t: Double) = d6(t6) + v6(t6) * (t - t6) + 0.5 * a6() * (t - t6).pow(2) + (1.0 / 6.0) * j7() * (t - t6).pow(3)
+    private fun d(t: Double) = when {
         t < 0 -> throw IllegalArgumentException("t cannot be negative")
         t <= t1 -> d1(t)
         t <= t2 -> d2(t)
@@ -175,6 +183,8 @@ class Trajectory(config: TrajectoryConfig) {
 
     fun calculateDistancePoints() {
         distancePoints.clear()
-        (0..t7).forEach { distancePoints.add(d(it)) }
+        virtualSecondsTimer(t7) {
+            distancePoints.add(d(it))
+        }
     }
 }

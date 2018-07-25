@@ -1,6 +1,7 @@
 package com.company.servotrajectorygui
 
 import kotlin.math.pow
+import kotlin.math.round
 
 fun Double.root(n: Int): Double {
     if (n < 2) throw IllegalArgumentException("n must be more than 1")
@@ -15,3 +16,14 @@ fun Double.root(n: Int): Double {
     }
     return g1
 }
+
+fun virtualSecondsTimer(seconds: Double, block: (Double) -> Unit) {
+    var t = 0.0
+    while (t < seconds) {
+        block(t)
+        t += 0.001
+    }
+}
+
+fun Double.roundTo(decimalPlaces: Int) =
+        round(this * 10.0.pow(decimalPlaces)) / 10.0.pow(decimalPlaces)

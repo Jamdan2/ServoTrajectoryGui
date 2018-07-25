@@ -1,8 +1,15 @@
 package com.company.servotrajectorygui.gui
 
 import com.company.servotrajectorygui.*
-import javafx.scene.Parent
+import com.company.servotrajectorygui.trajectory.Trajectory
+import com.company.servotrajectorygui.trajectory.TrajectoryConfig
+import com.company.servotrajectorygui.trajectory.trajectory
+import com.company.servotrajectorygui.trajectory.trajectoryConfig
+import com.sun.org.apache.bcel.internal.Repository.addClass
 import tornadofx.*
+import tornadofx.Stylesheet.Companion.label
+import tornadofx.Stylesheet.Companion.slider
+import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
 class SliderView : View() {
@@ -38,7 +45,10 @@ class SliderView : View() {
                     if (trajectory.isValid) trajectory.distancePoints.iterator().forEach {
                         link.setServoAngle(it.roundToInt())
                         Thread.sleep(1)
-                    } else error("trajectory is invalid")
+                    } else error(
+                            "trajectory is invalid",
+                            trajectory.problems.joinToString(",\n")
+                    )
                 }
             }
         }
@@ -74,7 +84,7 @@ class SliderView : View() {
                 }
                 slider(MIN_VELOCITY, MAX_VELOCITY, INITIAL_VELOCITY) {
                     minorTickCount = 10
-                    majorTickUnit = 0.1
+                    majorTickUnit = 100.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
@@ -96,7 +106,7 @@ class SliderView : View() {
                 }
                 slider(MIN_ACCELERATION, MAX_ACCELERATION, INITIAL_ACCELERATION) {
                     minorTickCount = 10
-                    majorTickUnit = 0.001
+                    majorTickUnit = 10.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
@@ -118,7 +128,7 @@ class SliderView : View() {
                 }
                 slider(MIN_JERK, MAX_JERK, INITIAL_JERK) {
                     minorTickCount = 10
-                    majorTickUnit = 0.001
+                    majorTickUnit = 1.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
