@@ -12,7 +12,7 @@ class GraphView : View() {
                 series("Distance") {
                     trajectory.calculateDistancePoints()
                     trajectory.distancePoints.forEachIndexed { index, value ->
-                        data(index, value)
+                        data(index / 1000.0, value)
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
@@ -27,7 +27,7 @@ class GraphView : View() {
                 series("Velocity") {
                     trajectory.calculateVelocityPoints()
                     trajectory.velocityPoints.forEachIndexed { index, value ->
-                        data(index, value)
+                        data(index / 1000.0, value)
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
@@ -44,7 +44,7 @@ class GraphView : View() {
                 series("Acceleration") {
                     trajectory.calculateAccelerationPoints()
                     trajectory.accelerationPoints.forEachIndexed { index, value ->
-                        data(index, value)
+                        data(index / 1000.0, value)
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
@@ -59,7 +59,7 @@ class GraphView : View() {
                 series("Jerk") {
                     trajectory.calculateJerkPoints()
                     trajectory.jerkPoints.forEachIndexed { index, value ->
-                        data(index, value)
+                        data(index / 1000.0, value)
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
