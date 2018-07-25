@@ -44,7 +44,12 @@ class MainView : View() {
                             trajectory.calculateVelocityPoints()
                             trajectory.calculateAccelerationPoints()
                             trajectory.calculateJerkPoints()
-                            if (!trajectory.isValid) warning("trajectory is invalid")
+                            if (!trajectory.isValid) {
+                                warning(
+                                        "trajectory is invalid",
+                                        trajectory.problems.joinToString(",\n")
+                                )
+                            }
                             fire(TrajectoryRecalculated)
                         }
                     }
@@ -109,7 +114,7 @@ class MainView : View() {
                         val jerkLabel = label("Max Jerk: 0.005")
                         slider(0, 0.01, 0.005) {
                             minorTickCount = 10
-                            majorTickUnit = 0.1
+                            majorTickUnit = 0.001
                             isShowTickMarks = true
                             isShowTickLabels = true
                             valueProperty().addListener { _, _, newValue ->

@@ -36,6 +36,7 @@ data class TrajectoryConfig(
 class Trajectory(config: TrajectoryConfig) {
     var isValid = true
         private set
+    val problems = mutableListOf<String>()
 
     init {
         if (
@@ -43,7 +44,10 @@ class Trajectory(config: TrajectoryConfig) {
                 config.maxVelocity < 0 ||
                 config.maxAcceleration < 0 ||
                 config.maxJerk < 0
-        ) isValid = false
+        ) {
+            isValid = false
+            problems.add("configurations cannot be less than 0")
+        }
     }
 
     private val d = config.distance
@@ -66,16 +70,19 @@ class Trajectory(config: TrajectoryConfig) {
     private val j = config.maxAcceleration
 
     // time constants
-    private val t1 = (a / j).roundToLong()
-    private val t2 = (v / a).roundToLong()
+    private val t1 = (a / j).toLong()
+    private val t2 = (v / a).toLong()
     private val t3 = t1 + t2
-    private val t4 = (d / v).roundToLong()
+    private val t4 = (d / v).toLong()
     private val t5 = t1 + t4
     private val t6 = t2 + t4
     private val t7 = t3 + t4
 
     init {
-        if (t2 - t1 < 0 || t4 - t2 - t1 < 0) isValid = false
+        if (t2 - t1 < 0 || t4 - t2 - t1 < 0) {
+            isValid = false
+            problems.add("time constants are invalid")
+        }
     }
 
     // jerk functions
