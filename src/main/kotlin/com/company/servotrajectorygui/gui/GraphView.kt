@@ -1,6 +1,8 @@
+@file:Suppress("NestedLambdaShadowedImplicitParameter")
 package com.company.servotrajectorygui.gui
 
-import com.company.servotrajectorygui.trajectory.trajectory
+import com.company.servotrajectorygui.trajectory.*
+import com.company.servotrajectorygui.virtualTimer
 import javafx.scene.chart.NumberAxis
 import tornadofx.*
 
@@ -11,14 +13,13 @@ class GraphView : View() {
                 addClass(Style.distanceChart)
                 setPrefSize(250.0, 250.0)
                 series("Distance") {
-                    trajectory.calculateDistancePoints()
-                    trajectory.distancePoints.forEachIndexed { index, value ->
-                        data(index / 1000.0, value)
+                    virtualTimer(trajectory.t7, 0.01) {
+                        data(it, trajectory.d(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        trajectory.distancePoints.forEachIndexed { index, value ->
-                            data(index / 1000.0, value)
+                        virtualTimer(trajectory.t7, 0.01) {
+                            data(it, trajectory.d(it))
                         }
                     }
                 }
@@ -27,14 +28,13 @@ class GraphView : View() {
                 addClass(Style.velocityChart)
                 setPrefSize(250.0, 250.0)
                 series("Velocity") {
-                    trajectory.calculateVelocityPoints()
-                    trajectory.velocityPoints.forEachIndexed { index, value ->
-                        data(index / 1000.0, value)
+                    virtualTimer(trajectory.t7, 0.01) {
+                        data(it, trajectory.v(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        trajectory.velocityPoints.forEachIndexed { index, value ->
-                            data(index / 1000.0, value)
+                        virtualTimer(trajectory.t7, 0.01) {
+                            data(it, trajectory.v(it))
                         }
                     }
                 }
@@ -45,14 +45,13 @@ class GraphView : View() {
                 addClass(Style.accelerationChart)
                 setPrefSize(250.0, 250.0)
                 series("Acceleration") {
-                    trajectory.calculateAccelerationPoints()
-                    trajectory.accelerationPoints.forEachIndexed { index, value ->
-                        data(index / 1000.0, value)
+                    virtualTimer(trajectory.t7, 0.01) {
+                        data(it, trajectory.a(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        trajectory.accelerationPoints.forEachIndexed { index, value ->
-                            data(index / 1000.0, value)
+                        virtualTimer(trajectory.t7, 0.01) {
+                            data(it, trajectory.a(it))
                         }
                     }
                 }
@@ -61,14 +60,13 @@ class GraphView : View() {
                 addClass(Style.jerkChart)
                 setPrefSize(250.0, 250.0)
                 series("Jerk") {
-                    trajectory.calculateJerkPoints()
-                    trajectory.jerkPoints.forEachIndexed { index, value ->
-                        data(index / 1000.0, value)
+                    virtualTimer(trajectory.t7, 0.01) {
+                        data(it, trajectory.j(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        trajectory.jerkPoints.forEachIndexed { index, value ->
-                            data(index / 1000.0, value)
+                        virtualTimer(trajectory.t7, 0.01) {
+                            data(it, trajectory.j(it))
                         }
                     }
                 }

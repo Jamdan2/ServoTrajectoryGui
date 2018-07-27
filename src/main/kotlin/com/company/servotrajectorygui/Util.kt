@@ -1,7 +1,9 @@
 package com.company.servotrajectorygui
 
+import kotlinx.coroutines.experimental.delay
 import kotlin.math.pow
 import kotlin.math.round
+import kotlin.math.roundToInt
 
 fun Double.root(n: Int): Double {
     if (n < 2) throw IllegalArgumentException("n must be more than 1")
@@ -17,11 +19,21 @@ fun Double.root(n: Int): Double {
     return g1
 }
 
-fun virtualSecondsTimer(seconds: Double, block: (Double) -> Unit) {
-    var t = 0.0
-    while (t < seconds) {
-        block(t)
-        t += 0.001
+fun virtualTimer(seconds: Double, tick: Double = 0.001, block: (Double) -> Unit) {
+    var now = 0.0
+    while (now < seconds) {
+        block(now)
+        now += tick
+    }
+}
+
+suspend fun timer(seconds: Double, tick: Double = 0.001, block: (Double) -> Unit) {
+    var now = 0.0
+    val tickMilliseconds = (tick * 1000).roundToInt()
+    while (now < seconds) {
+        block(now)
+        now += tick
+        delay(tickMilliseconds)
     }
 }
 

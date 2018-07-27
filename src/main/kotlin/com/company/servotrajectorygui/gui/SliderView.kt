@@ -1,10 +1,7 @@
 package com.company.servotrajectorygui.gui
 
 import com.company.servotrajectorygui.*
-import com.company.servotrajectorygui.trajectory.Trajectory
-import com.company.servotrajectorygui.trajectory.TrajectoryConfig
-import com.company.servotrajectorygui.trajectory.trajectory
-import com.company.servotrajectorygui.trajectory.trajectoryConfig
+import com.company.servotrajectorygui.trajectory.*
 import com.sun.org.apache.bcel.internal.Repository.addClass
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -27,34 +24,16 @@ class SliderView : View() {
             button {
                 text = "Calculate trajectory"
                 action {
-                    launch {
                         trajectory = Trajectory(trajectoryConfig)
-                        launch { trajectory.calculateDistancePoints() }
-                        launch { trajectory.calculateVelocityPoints() }
-                        launch { trajectory.calculateAccelerationPoints() }
-                        launch { trajectory.calculateJerkPoints() }
-                        if (!trajectory.isValid) {
-                            warning(
-                                    "trajectory is invalid",
-                                    trajectory.problems.joinToString(",\n")
-                            )
-                        }
                         fire(TrajectoryRecalculated)
-                    }
                 }
             }
             button {
                 text = "Run trajectory"
                 action {
-                    launch {
-                        if (trajectory.isValid) trajectory.distancePoints.iterator().forEach {
-                            link.setServoAngle(it.roundToInt())
-                            delay(1)
-                        } else error(
-                                "trajectory is invalid",
-                                trajectory.problems.joinToString(",\n")
-                        )
-                    }
+                    if (trajectory.isValid) {
+                        TODO("run trajectory somehow")
+                    } else error("Trajectory is invalid!")
                 }
             }
         }
