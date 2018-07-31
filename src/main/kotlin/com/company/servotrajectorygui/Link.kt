@@ -6,5 +6,5 @@ import org.ardulink.core.convenience.Links
 
 val link: Link = Links.getDefault()
 
-val speedPin = Pin.analogPin(9)
-val enablePin = Pin.digitalPin(8)
+val motorPin: Pin.AnalogPin = Pin.analogPin(MOTOR_PIN_NUM)
+val enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
