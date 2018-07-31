@@ -45,8 +45,8 @@ class SliderView : View() {
                     }
                 }
                 slider(MIN_DISTANCE, MAX_DISTANCE, INITIAL_DISTANCE) {
-                    minorTickCount = 15
-                    majorTickUnit = 15.0
+                    minorTickCount = 10
+                    majorTickUnit = 100.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
@@ -68,7 +68,7 @@ class SliderView : View() {
                 }
                 slider(MIN_VELOCITY, MAX_VELOCITY, INITIAL_VELOCITY) {
                     minorTickCount = 10
-                    majorTickUnit = 100.0
+                    majorTickUnit = 25.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
@@ -90,7 +90,7 @@ class SliderView : View() {
                 }
                 slider(MIN_ACCELERATION, MAX_ACCELERATION, INITIAL_ACCELERATION) {
                     minorTickCount = 10
-                    majorTickUnit = 10.0
+                    majorTickUnit = 25.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
@@ -112,7 +112,7 @@ class SliderView : View() {
                 }
                 slider(MIN_JERK, MAX_JERK, INITIAL_JERK) {
                     minorTickCount = 10
-                    majorTickUnit = 1.0
+                    majorTickUnit = 25.0
                     isShowTickMarks = true
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
