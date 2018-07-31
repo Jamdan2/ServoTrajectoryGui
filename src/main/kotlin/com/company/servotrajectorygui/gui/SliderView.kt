@@ -18,7 +18,7 @@ class SliderView : View() {
             button {
                 text = "Reset servo"
                 action {
-                    link.setServoAngle(0)
+                    TODO("Do something here, or get rid of it")
                 }
             }
             button {
@@ -31,18 +31,17 @@ class SliderView : View() {
             button {
                 text = "Run trajectory"
                 action {
-                    if (trajectory.isValid) {
-                        TODO("run trajectory somehow")
-                    } else error("Trajectory is invalid!")
+                    if (trajectory.isValid) trajectory.run()
+                    else error("Trajectory is invalid!")
                 }
             }
         }
         vbox {
             addClass(Style.wrapper)
             vbox {
-                label("Distance (deg): $INITIAL_DISTANCE") {
+                label("Distance (rotations): $INITIAL_DISTANCE") {
                     subscribe<DistanceSliderValueChanged> {
-                        text = "Distance (deg): ${it.newValue}"
+                        text = "Distance (rotations): ${it.newValue}"
                     }
                 }
                 slider(MIN_DISTANCE, MAX_DISTANCE, INITIAL_DISTANCE) {
@@ -62,9 +61,9 @@ class SliderView : View() {
                 }
             }
             vbox {
-                label("Max Velocity (deg / sec): $INITIAL_VELOCITY") {
+                label("Max Velocity (rotations / sec): $INITIAL_VELOCITY") {
                     subscribe<VelocitySliderValueChanged> {
-                        text = "Max Velocity (deg / sec): ${it.newValue}"
+                        text = "Max Velocity (rotations / sec): ${it.newValue}"
                     }
                 }
                 slider(MIN_VELOCITY, MAX_VELOCITY, INITIAL_VELOCITY) {
@@ -84,9 +83,9 @@ class SliderView : View() {
                 }
             }
             vbox {
-                label("Max Acceleration (deg / sec ^ 2): $INITIAL_ACCELERATION") {
+                label("Max Acceleration (rotations / sec ^ 2): $INITIAL_ACCELERATION") {
                     subscribe<AccelerationSliderValueChanged> {
-                        text = "Max Acceleration (deg / sec ^ 2): ${it.newValue}"
+                        text = "Max Acceleration (rotations / sec ^ 2): ${it.newValue}"
                     }
                 }
                 slider(MIN_ACCELERATION, MAX_ACCELERATION, INITIAL_ACCELERATION) {
@@ -106,9 +105,9 @@ class SliderView : View() {
                 }
             }
             vbox {
-                label("Max Jerk (deg / sec ^ 3): $INITIAL_JERK") {
+                label("Max Jerk (rotations / sec ^ 3): $INITIAL_JERK") {
                     subscribe<JerkSliderValueChanged> {
-                        text = "Max Jerk (deg / sec ^ 3): ${it.newValue}"
+                        text = "Max Jerk (rotations / sec ^ 3): ${it.newValue}"
                     }
                 }
                 slider(MIN_JERK, MAX_JERK, INITIAL_JERK) {

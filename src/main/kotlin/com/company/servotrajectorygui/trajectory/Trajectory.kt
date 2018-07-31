@@ -3,15 +3,6 @@ package com.company.servotrajectorygui.trajectory
 import com.company.servotrajectorygui.*
 import kotlin.math.*
 
-var trajectoryConfig = TrajectoryConfig(
-        INITIAL_DISTANCE,
-        INITIAL_VELOCITY,
-        INITIAL_ACCELERATION,
-        INITIAL_JERK
-)
-
-var trajectory = Trajectory(trajectoryConfig)
-
 data class TrajectoryConfig(
         val distance: Int,
         val maxVelocity: Double,

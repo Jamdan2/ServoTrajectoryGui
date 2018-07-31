@@ -1,13 +1,14 @@
 package com.company.servotrajectorygui
 
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.roundToInt
 
 fun Double.root(n: Int): Double {
     if (n < 2) throw IllegalArgumentException("n must be more than 1")
-    if (this <= 0.0) throw IllegalArgumentException("x must be positive")
+    if (this <= 0.0) throw IllegalArgumentException("must be positive")
     val np = n - 1
     fun iter(g: Double) = (np * g + this / g.pow(np.toDouble())) / n
     var g1 = this
@@ -27,13 +28,13 @@ fun virtualTimer(seconds: Double, tick: Double = 0.001, block: (Double) -> Unit)
     }
 }
 
-suspend fun timer(seconds: Double, tick: Double = 0.001, block: (Double) -> Unit) {
+fun timer(seconds: Double, tick: Double = 0.001, block: (Double) -> Unit) = launch {
     var now = 0.0
-    val tickMilliseconds = (tick * 1000).roundToInt()
+    val tickMilliseconds = ((tick.roundTo(4) * 1000).toInt())
     while (now < seconds) {
-        block(now)
-        now += tick
+        launch { block(now) }
         delay(tickMilliseconds)
+        now += tick
     }
 }
 
