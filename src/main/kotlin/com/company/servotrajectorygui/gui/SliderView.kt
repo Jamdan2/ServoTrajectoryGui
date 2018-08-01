@@ -16,12 +16,6 @@ class SliderView : View() {
         hbox {
             addClass(Style.wrapper)
             button {
-                text = "Reset servo"
-                action {
-                    TODO("Do something here, or get rid of it")
-                }
-            }
-            button {
                 text = "Calculate trajectory"
                 action {
                         trajectory = Trajectory(trajectoryConfig)
