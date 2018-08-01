@@ -27,7 +27,7 @@ fun Link.listenToFeedback() {
         startListening(sensorPin)
         addListener(object : EventListener {
             override fun stateChanged(event: AnalogPinValueChangedEvent?) {
-                if (event != null) feedbackValue = (event.value / 818.4 * MAX_VELOCITY).toInt()
+                if (event != null) feedbackValue = (event.value / 818.4 * 250).toInt()
             }
 
             override fun stateChanged(event: DigitalPinValueChangedEvent?) = Unit
