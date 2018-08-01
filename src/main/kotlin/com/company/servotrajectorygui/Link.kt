@@ -8,3 +8,4 @@ val link: Link = Links.getDefault()
 
 val motorPin: Pin.AnalogPin = Pin.analogPin(MOTOR_PIN_NUM)
 val enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
+val sensorPin: Pin.AnalogPin = Pin.analogPin(0)

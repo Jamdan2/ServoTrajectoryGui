@@ -31,7 +31,7 @@ class SliderView : View() {
             button {
                 text = "Run trajectory"
                 action {
-                    if (trajectory.isValid) trajectory.run()
+                    if (trajectory.isValid) link.run(trajectory)
                     else error("Trajectory is invalid!")
                 }
             }
