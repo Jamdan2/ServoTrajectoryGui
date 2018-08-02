@@ -5,6 +5,7 @@ import com.company.servotrajectorygui.trajectory.*
 import com.sun.org.apache.bcel.internal.Repository.addClass
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import sun.awt.image.ImageWatched
 import tornadofx.*
 import tornadofx.Stylesheet.Companion.label
 import tornadofx.Stylesheet.Companion.slider
@@ -12,20 +13,25 @@ import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
 class SliderView : View() {
+    private val linkController: LinkController by inject()
+    private val trajectoryController: TrajectoryController by inject()
+
     override val root = vbox {
         hbox {
             addClass(Style.wrapper)
             button {
                 text = "Calculate trajectory"
                 action {
-                        trajectory = Trajectory(trajectoryConfig)
+                        trajectoryController.syncTrajectoryWithConfig()
                         fire(TrajectoryRecalculated)
                 }
             }
             button {
                 text = "Run trajectory"
                 action {
-                    if (trajectory.isValid) link.run(trajectory)
+                    if (trajectoryController.trajectory.isValid) {
+                        linkController.runTrajectory(trajectoryController.trajectory)
+                    }
                     else error("Trajectory is invalid!")
                 }
             }
@@ -45,11 +51,11 @@ class SliderView : View() {
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
                         fire(DistanceSliderValueChanged(newValue.toInt()))
-                        trajectoryConfig = TrajectoryConfig(
+                        trajectoryController.trajectoryConfig = TrajectoryConfig(
                                 newValue.toInt(),
-                                trajectoryConfig.maxVelocity,
-                                trajectoryConfig.maxAcceleration,
-                                trajectoryConfig.maxJerk
+                                trajectoryController.trajectoryConfig.maxVelocity,
+                                trajectoryController.trajectoryConfig.maxAcceleration,
+                                trajectoryController.trajectoryConfig.maxJerk
                         )
                     }
                 }
@@ -67,11 +73,11 @@ class SliderView : View() {
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
                         fire(VelocitySliderValueChanged(newValue.toDouble()))
-                        trajectoryConfig = TrajectoryConfig(
-                                trajectoryConfig.distance,
+                        trajectoryController.trajectoryConfig = TrajectoryConfig(
+                                trajectoryController.trajectoryConfig.distance,
                                 newValue.toDouble(),
-                                trajectoryConfig.maxAcceleration,
-                                trajectoryConfig.maxJerk
+                                trajectoryController.trajectoryConfig.maxAcceleration,
+                                trajectoryController.trajectoryConfig.maxJerk
                         )
                     }
                 }
@@ -89,11 +95,11 @@ class SliderView : View() {
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
                         fire(AccelerationSliderValueChanged(newValue.toDouble()))
-                        trajectoryConfig = TrajectoryConfig(
-                                trajectoryConfig.distance,
-                                trajectoryConfig.maxVelocity,
+                        trajectoryController.trajectoryConfig = TrajectoryConfig(
+                                trajectoryController.trajectoryConfig.distance,
+                                trajectoryController.trajectoryConfig.maxVelocity,
                                 newValue.toDouble(),
-                                trajectoryConfig.maxJerk
+                                trajectoryController.trajectoryConfig.maxJerk
                         )
                     }
                 }
@@ -111,10 +117,10 @@ class SliderView : View() {
                     isShowTickLabels = true
                     valueProperty().addListener { _, _, newValue ->
                         fire(JerkSliderValueChanged(newValue.toDouble()))
-                        trajectoryConfig = TrajectoryConfig(
-                                trajectoryConfig.distance,
-                                trajectoryConfig.maxVelocity,
-                                trajectoryConfig.maxAcceleration,
+                        trajectoryController.trajectoryConfig = TrajectoryConfig(
+                                trajectoryController.trajectoryConfig.distance,
+                                trajectoryController.trajectoryConfig.maxVelocity,
+                                trajectoryController.trajectoryConfig.maxAcceleration,
                                 newValue.toDouble()
                         )
                     }

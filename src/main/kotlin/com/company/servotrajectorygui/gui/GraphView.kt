@@ -7,19 +7,21 @@ import javafx.scene.chart.NumberAxis
 import tornadofx.*
 
 class GraphView : View() {
+    private val trajectoryController: TrajectoryController by inject()
+
     override val root = vbox {
         hbox {
             scatterchart("Distance", NumberAxis(), NumberAxis()) {
                 addClass(Style.distanceChart)
                 setPrefSize(250.0, 250.0)
                 series("Distance") {
-                    virtualTimer(trajectory.t7, 0.01) {
-                        data(it, trajectory.d(it))
+                    virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                        data(it, trajectoryController.trajectory.d(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        virtualTimer(trajectory.t7, 0.01) {
-                            data(it, trajectory.d(it))
+                        virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                            data(it, trajectoryController.trajectory.d(it))
                         }
                     }
                 }
@@ -28,13 +30,13 @@ class GraphView : View() {
                 addClass(Style.velocityChart)
                 setPrefSize(250.0, 250.0)
                 series("Velocity") {
-                    virtualTimer(trajectory.t7, 0.01) {
-                        data(it, trajectory.v(it))
+                    virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                        data(it, trajectoryController.trajectory.v(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        virtualTimer(trajectory.t7, 0.01) {
-                            data(it, trajectory.v(it))
+                        virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                            data(it, trajectoryController.trajectory.v(it))
                         }
                     }
                 }
@@ -45,13 +47,13 @@ class GraphView : View() {
                 addClass(Style.accelerationChart)
                 setPrefSize(250.0, 250.0)
                 series("Acceleration") {
-                    virtualTimer(trajectory.t7, 0.01) {
-                        data(it, trajectory.a(it))
+                    virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                        data(it, trajectoryController.trajectory.a(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        virtualTimer(trajectory.t7, 0.01) {
-                            data(it, trajectory.a(it))
+                        virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                            data(it, trajectoryController.trajectory.a(it))
                         }
                     }
                 }
@@ -60,13 +62,13 @@ class GraphView : View() {
                 addClass(Style.jerkChart)
                 setPrefSize(250.0, 250.0)
                 series("Jerk") {
-                    virtualTimer(trajectory.t7, 0.01) {
-                        data(it, trajectory.j(it))
+                    virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                        data(it, trajectoryController.trajectory.j(it))
                     }
                     subscribe<TrajectoryRecalculated> {
                         data.clear()
-                        virtualTimer(trajectory.t7, 0.01) {
-                            data(it, trajectory.j(it))
+                        virtualTimer(trajectoryController.trajectory.t7, 0.01) {
+                            data(it, trajectoryController.trajectory.j(it))
                         }
                     }
                 }
