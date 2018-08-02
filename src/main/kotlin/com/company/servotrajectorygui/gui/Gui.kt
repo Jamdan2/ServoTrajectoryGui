@@ -1,5 +1,8 @@
 package com.company.servotrajectorygui.gui
 
+import com.company.servotrajectorygui.gui.controllers.LinkController
+import com.company.servotrajectorygui.gui.styles.Style
+import com.company.servotrajectorygui.gui.views.MainView
 import javafx.stage.Stage
 import tornadofx.*
 

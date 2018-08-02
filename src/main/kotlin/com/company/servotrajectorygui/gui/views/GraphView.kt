@@ -1,6 +1,9 @@
 @file:Suppress("NestedLambdaShadowedImplicitParameter")
-package com.company.servotrajectorygui.gui
+package com.company.servotrajectorygui.gui.views
 
+import com.company.servotrajectorygui.gui.styles.Style
+import com.company.servotrajectorygui.gui.controllers.TrajectoryController
+import com.company.servotrajectorygui.gui.events.TrajectoryRecalculated
 import com.company.servotrajectorygui.trajectory.*
 import com.company.servotrajectorygui.virtualTimer
 import javafx.scene.chart.NumberAxis

@@ -1,4 +1,4 @@
-package com.company.servotrajectorygui.gui
+package com.company.servotrajectorygui.gui.controllers
 
 import com.company.servotrajectorygui.ENABLE_PIN_NUM
 import com.company.servotrajectorygui.MOTOR_PIN_NUM

@@ -1,4 +1,4 @@
-package com.company.servotrajectorygui.gui
+package com.company.servotrajectorygui.gui.events
 
 import tornadofx.EventBus
 import tornadofx.FXEvent

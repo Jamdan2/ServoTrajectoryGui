@@ -1,5 +1,6 @@
-package com.company.servotrajectorygui.gui
+package com.company.servotrajectorygui.gui.views
 
+import com.company.servotrajectorygui.gui.styles.Style
 import tornadofx.*
 
 class MainView : View() {

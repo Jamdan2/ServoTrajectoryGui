@@ -1,16 +1,12 @@
-package com.company.servotrajectorygui.gui
+package com.company.servotrajectorygui.gui.views
 
 import com.company.servotrajectorygui.*
+import com.company.servotrajectorygui.gui.controllers.LinkController
+import com.company.servotrajectorygui.gui.controllers.TrajectoryController
+import com.company.servotrajectorygui.gui.events.*
+import com.company.servotrajectorygui.gui.styles.Style
 import com.company.servotrajectorygui.trajectory.*
-import com.sun.org.apache.bcel.internal.Repository.addClass
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import sun.awt.image.ImageWatched
 import tornadofx.*
-import tornadofx.Stylesheet.Companion.label
-import tornadofx.Stylesheet.Companion.slider
-import kotlin.concurrent.thread
-import kotlin.math.roundToInt
 
 class SliderView : View() {
     private val linkController: LinkController by inject()

@@ -1,4 +1,4 @@
-package com.company.servotrajectorygui.gui
+package com.company.servotrajectorygui.gui.styles
 
 import tornadofx.*
 
