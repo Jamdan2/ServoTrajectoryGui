@@ -13,9 +13,11 @@ import org.ardulink.core.events.AnalogPinValueChangedEvent
 import org.ardulink.core.events.DigitalPinValueChangedEvent
 import org.ardulink.core.events.EventListener
 import tornadofx.Controller
+import tornadofx.error
 
 class LinkController : Controller() {
-    private val link: Link = Links.getDefault()
+    private lateinit var link: Link
+    var linked = false
 
     private val motorPin: Pin.AnalogPin = Pin.analogPin(MOTOR_PIN_NUM)
     private val enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
@@ -23,12 +25,23 @@ class LinkController : Controller() {
 
     private var feedbackValue = 0
 
+    fun connect() {
+        if (!linked) try {
+            link = Links.getDefault()
+            linked = true
+            supplyMinimumVoltage()
+            listenToFeedback()
+        } catch (e: RuntimeException) {
+            error("Failed to connect to Arduino", "Is your arduino plugged in?")
+        }
+    }
+
     fun supplyMinimumVoltage() {
-        link.switchAnalogPin(motorPin, 3)
+        if (linked) link.switchAnalogPin(motorPin, 3)
     }
 
     fun listenToFeedback() {
-        launch {
+        if (linked) launch {
             link.startListening(sensorPin)
             link.addListener(object : EventListener {
                 override fun stateChanged(event: AnalogPinValueChangedEvent?) {
@@ -41,7 +54,8 @@ class LinkController : Controller() {
     }
 
     fun runTrajectory(trajectory: Trajectory) {
-        launch {
+        connect()
+        if (linked) launch {
             link.switchDigitalPin(enablePin, true)
             val timer = timer(trajectory.t7, 0.05) {
                 link.switchAnalogPin(motorPin, ((trajectory.v(it) / 250) * 255 * 0.8 + 26).toInt())

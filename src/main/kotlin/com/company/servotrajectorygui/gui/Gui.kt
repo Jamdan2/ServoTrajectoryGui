@@ -12,7 +12,6 @@ class Gui : App(MainView::class, Style::class) {
     override fun start(stage: Stage) {
         super.start(stage)
         stage.isResizable = false
-        linkController.supplyMinimumVoltage()
-        linkController.listenToFeedback()
+        linkController.connect()
     }
 }
