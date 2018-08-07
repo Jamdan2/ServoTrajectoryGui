@@ -2,6 +2,7 @@ package com.company.servotrajectorygui.gui.controllers
 
 import com.company.servotrajectorygui.ENABLE_PIN_NUM
 import com.company.servotrajectorygui.MOTOR_PIN_NUM
+import com.company.servotrajectorygui.SENSOR_PIN_NUM
 import com.company.servotrajectorygui.timer
 import com.company.servotrajectorygui.trajectory.Trajectory
 import com.company.servotrajectorygui.trajectory.v
@@ -21,7 +22,7 @@ class LinkController : Controller() {
 
     private val motorPin: Pin.AnalogPin = Pin.analogPin(MOTOR_PIN_NUM)
     private val enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
-    private val sensorPin: Pin.AnalogPin = Pin.analogPin(0)
+    private val sensorPin: Pin.AnalogPin = Pin.analogPin(SENSOR_PIN_NUM)
 
     private var feedbackValue = 0
 
