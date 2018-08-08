@@ -33,7 +33,7 @@ class LinkController : Controller() {
             supplyMinimumVoltage()
             listenToFeedback()
         } catch (e: RuntimeException) {
-            error("Failed to connect to Arduino", "Is your arduino plugged in?")
+            error("Failed to connect to Arduino", "Is your Arduino plugged in?")
         }
     }
 
