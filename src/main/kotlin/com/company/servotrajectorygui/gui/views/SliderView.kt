@@ -10,9 +10,9 @@ import com.company.servotrajectorygui.trajectory.*
 import tornadofx.*
 
 class SliderView : View() {
-    private val linkController: LinkController by inject()
-    private val trajectoryController: TrajectoryController by inject()
-    private val pidController: PidController by inject()
+    private val linkController by inject<LinkController>()
+    private val trajectoryController by inject<TrajectoryController>()
+    private val pidController by inject<PidController>()
 
     override val root = vbox {
         hbox {

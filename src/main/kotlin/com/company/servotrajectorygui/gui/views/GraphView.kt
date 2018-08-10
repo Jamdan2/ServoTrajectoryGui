@@ -10,7 +10,7 @@ import javafx.scene.chart.NumberAxis
 import tornadofx.*
 
 class GraphView : View() {
-    private val trajectoryController: TrajectoryController by inject()
+    private val trajectoryController by inject<TrajectoryController>()
 
     override val root = vbox {
         hbox {
