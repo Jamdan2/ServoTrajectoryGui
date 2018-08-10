@@ -17,6 +17,7 @@ class TrajectoryController : Controller() {
     )
 
     var trajectory = Trajectory(trajectoryConfig)
+        private set
 
     fun syncTrajectoryWithConfig() {
         trajectory = Trajectory(trajectoryConfig)
