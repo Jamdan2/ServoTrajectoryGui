@@ -34,11 +34,11 @@ class LinkController : Controller() {
         }
     }
 
-    fun supplyMinimumVoltage() {
+    private fun supplyMinimumVoltage() {
         if (linked) link.switchAnalogPin(motorPin, 3)
     }
 
-    fun listenToFeedback() {
+    private fun listenToFeedback() {
         if (linked) launch {
             link.startListening(sensorPin)
             link.addListener(object : EventListener {
