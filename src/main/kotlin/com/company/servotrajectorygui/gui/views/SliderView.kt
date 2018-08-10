@@ -2,6 +2,7 @@ package com.company.servotrajectorygui.gui.views
 
 import com.company.servotrajectorygui.*
 import com.company.servotrajectorygui.gui.controllers.LinkController
+import com.company.servotrajectorygui.gui.controllers.PidController
 import com.company.servotrajectorygui.gui.controllers.TrajectoryController
 import com.company.servotrajectorygui.gui.events.*
 import com.company.servotrajectorygui.gui.styles.Style
@@ -11,6 +12,7 @@ import tornadofx.*
 class SliderView : View() {
     private val linkController: LinkController by inject()
     private val trajectoryController: TrajectoryController by inject()
+    private val pidController: PidController by inject()
 
     override val root = vbox {
         hbox {
@@ -26,7 +28,7 @@ class SliderView : View() {
                 text = "Run trajectory"
                 action {
                     if (trajectoryController.trajectory.isValid) {
-                        linkController.runTrajectory(trajectoryController.trajectory)
+                        linkController.runTrajectory(trajectoryController.trajectory, pidController.pidConfig)
                     }
                     else error("Trajectory is invalid!")
                 }
@@ -119,6 +121,49 @@ class SliderView : View() {
                                 trajectoryController.trajectoryConfig.maxAcceleration,
                                 newValue.toDouble()
                         )
+                    }
+                }
+            }
+            hbox {
+                addClass(Style.wrapper)
+                addClass(Style.textFields)
+                hbox {
+                    label("Kp: ")
+                    textfield("0") {
+                        filterInput { it.controlNewText.isDouble() }
+                        textProperty().addListener { _, _, newValue ->
+                            if (newValue != "") {
+                                with(pidController.pidConfig) {
+                                    pidController.pidConfig = PidConfig(newValue.toDouble(), ki, kd)
+                                }
+                            }
+                        }
+                    }
+                }
+                hbox {
+                    label("Ki: ")
+                    textfield("0") {
+                        filterInput { it.controlNewText.isDouble() }
+                        textProperty().addListener { _, _, newValue ->
+                            if (newValue != "") {
+                                with(pidController.pidConfig) {
+                                    pidController.pidConfig = PidConfig(kp, newValue.toDouble(), kd)
+                                }
+                            }
+                        }
+                    }
+                }
+                hbox {
+                    label("Kd: ")
+                    textfield("0") {
+                        filterInput { it.controlNewText.isDouble() }
+                        textProperty().addListener { _, _, newValue ->
+                            if (newValue != "") {
+                                with(pidController.pidConfig) {
+                                    pidController.pidConfig = PidConfig(kp, ki, newValue.toDouble())
+                                }
+                            }
+                        }
                     }
                 }
             }

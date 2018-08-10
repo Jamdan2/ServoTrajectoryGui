@@ -1,9 +1,6 @@
 package com.company.servotrajectorygui.gui.controllers
 
-import com.company.servotrajectorygui.ENABLE_PIN_NUM
-import com.company.servotrajectorygui.MOTOR_PIN_NUM
-import com.company.servotrajectorygui.SENSOR_PIN_NUM
-import com.company.servotrajectorygui.timer
+import com.company.servotrajectorygui.*
 import com.company.servotrajectorygui.trajectory.Trajectory
 import com.company.servotrajectorygui.trajectory.v
 import kotlinx.coroutines.experimental.launch
@@ -24,7 +21,7 @@ class LinkController : Controller() {
     private val enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
     private val sensorPin: Pin.AnalogPin = Pin.analogPin(SENSOR_PIN_NUM)
 
-    private var feedbackValue = 0
+    private var feedback = 0.0
 
     fun connect() {
         if (!linked) try {
@@ -46,7 +43,7 @@ class LinkController : Controller() {
             link.startListening(sensorPin)
             link.addListener(object : EventListener {
                 override fun stateChanged(event: AnalogPinValueChangedEvent?) {
-                    if (event != null) feedbackValue = (event.value / 818.4 * 250).toInt()
+                    if (event != null) feedback = (event.value / 818.4 * 250)
                 }
 
                 override fun stateChanged(event: DigitalPinValueChangedEvent?) = Unit
@@ -54,12 +51,16 @@ class LinkController : Controller() {
         }
     }
 
-    fun runTrajectory(trajectory: Trajectory) {
+    fun runTrajectory(trajectory: Trajectory, pidConfig: PidConfig) {
         connect()
         if (linked) launch {
             link.switchDigitalPin(enablePin, true)
+            val pid = Pid(pidConfig, 0.05)
             val timer = timer(trajectory.t7, 0.05) {
-                link.switchAnalogPin(motorPin, ((trajectory.v(it) / 250) * 255 * 0.8 + 26).toInt())
+                link.switchAnalogPin(
+                        motorPin,
+                        (pid.next(trajectory.v(it), feedback) / 250 * 255 * 0.8 + 26).toInt()
+                )
             }
             timer.join()
             link.switchDigitalPin(enablePin, false)

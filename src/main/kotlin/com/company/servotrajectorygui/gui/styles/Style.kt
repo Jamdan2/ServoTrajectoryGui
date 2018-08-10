@@ -9,6 +9,7 @@ class Style : Stylesheet() {
         val velocityChart by cssclass()
         val accelerationChart by cssclass()
         val jerkChart by cssclass()
+        val textFields by cssclass()
     }
     init {
         root {
@@ -43,6 +44,11 @@ class Style : Stylesheet() {
         jerkChart {
             chartSymbol {
                 backgroundColor = multi(c("#7f00ff"))
+            }
+        }
+        textFields {
+            textField {
+                prefWidth = 20.mm
             }
         }
     }
