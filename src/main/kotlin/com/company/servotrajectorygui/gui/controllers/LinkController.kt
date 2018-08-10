@@ -43,7 +43,7 @@ class LinkController : Controller() {
             link.startListening(sensorPin)
             link.addListener(object : EventListener {
                 override fun stateChanged(event: AnalogPinValueChangedEvent?) {
-                    if (event != null) feedback = (event.value / 818.4 * 250)
+                    if (event != null) feedback = outputVoltageToRps(event.value)
                 }
 
                 override fun stateChanged(event: DigitalPinValueChangedEvent?) = Unit
@@ -57,10 +57,7 @@ class LinkController : Controller() {
             link.switchDigitalPin(enablePin, true)
             val pid = Pid(pidConfig, 0.05)
             val timer = timer(trajectory.t7, 0.05) {
-                link.switchAnalogPin(
-                        motorPin,
-                        (pid.next(trajectory.v(it), feedback) / 250 * 255 * 0.8 + 26).toInt()
-                )
+                link.switchAnalogPin(motorPin, rpsToInputVoltage(pid.next(trajectory.v(it), feedback)))
             }
             timer.join()
             link.switchDigitalPin(enablePin, false)
