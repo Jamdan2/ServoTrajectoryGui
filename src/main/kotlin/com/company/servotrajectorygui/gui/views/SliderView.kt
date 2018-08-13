@@ -16,7 +16,7 @@ class SliderView : View() {
 
     override val root = vbox {
         hbox {
-            addClass(Style.wrapper)
+            addClass(Style.spaced)
             button {
                 text = "Calculate trajectory"
                 action {
@@ -35,7 +35,7 @@ class SliderView : View() {
             }
         }
         vbox {
-            addClass(Style.wrapper)
+            addClass(Style.spaced)
             vbox {
                 label("Distance (rotations): $INITIAL_DISTANCE") {
                     subscribe<DistanceSliderValueChanged> {
@@ -125,7 +125,7 @@ class SliderView : View() {
                 }
             }
             hbox {
-                addClass(Style.wrapper)
+                addClass(Style.spaced)
                 addClass(Style.textFields)
                 hbox {
                     label("Kp: ")

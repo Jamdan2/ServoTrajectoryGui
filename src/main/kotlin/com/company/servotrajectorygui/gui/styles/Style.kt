@@ -4,7 +4,7 @@ import tornadofx.*
 
 class Style : Stylesheet() {
     companion object {
-        val wrapper by cssclass()
+        val spaced by cssclass()
         val distanceChart by cssclass()
         val velocityChart by cssclass()
         val accelerationChart by cssclass()
@@ -18,7 +18,7 @@ class Style : Stylesheet() {
         slider {
             prefWidth = 150.mm
         }
-        wrapper {
+        spaced {
             spacing = 3.mm
         }
         chartSymbol {

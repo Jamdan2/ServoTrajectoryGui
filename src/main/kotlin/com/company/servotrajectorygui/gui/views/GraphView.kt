@@ -18,6 +18,7 @@ class GraphView : View() {
                 addClass(Style.distanceChart)
                 xAxis.label = "seconds"
                 yAxis.label = "rotations"
+                isLegendVisible = false
                 setPrefSize(250.0, 250.0)
                 series("Distance") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {
@@ -35,6 +36,7 @@ class GraphView : View() {
                 addClass(Style.velocityChart)
                 xAxis.label = "seconds"
                 yAxis.label = "rotations / second"
+                isLegendVisible = false
                 setPrefSize(250.0, 250.0)
                 series("Velocity") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {
@@ -54,6 +56,7 @@ class GraphView : View() {
                 addClass(Style.accelerationChart)
                 xAxis.label = "seconds"
                 yAxis.label = "rotations / second^2"
+                isLegendVisible = false
                 setPrefSize(250.0, 250.0)
                 series("Acceleration") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {
@@ -71,6 +74,7 @@ class GraphView : View() {
                 addClass(Style.jerkChart)
                 xAxis.label = "seconds"
                 yAxis.label = "rotations / second^3"
+                isLegendVisible = false
                 setPrefSize(250.0, 250.0)
                 series("Jerk") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {

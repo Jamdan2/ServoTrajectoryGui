@@ -6,7 +6,7 @@ import tornadofx.*
 class MainView : View() {
     override val root = borderpane {
         title = "Servo Trajectory Gui"
-        addClass(Style.wrapper)
+        addClass(Style.spaced)
         left<SliderView>()
         right<GraphView>()
     }
