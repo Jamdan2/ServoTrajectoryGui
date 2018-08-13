@@ -59,9 +59,9 @@ class SliderView : View() {
                 }
             }
             vbox {
-                label("Max Velocity (rotations / sec): $INITIAL_VELOCITY") {
+                label("Max Velocity (rotations / second): $INITIAL_VELOCITY") {
                     subscribe<VelocitySliderValueChanged> {
-                        text = "Max Velocity (rotations / sec): ${it.newValue}"
+                        text = "Max Velocity (rotations / second): ${it.newValue}"
                     }
                 }
                 slider(MIN_VELOCITY, MAX_VELOCITY, INITIAL_VELOCITY) {
@@ -81,9 +81,9 @@ class SliderView : View() {
                 }
             }
             vbox {
-                label("Max Acceleration (rotations / sec ^ 2): $INITIAL_ACCELERATION") {
+                label("Max Acceleration (rotations / second^2): $INITIAL_ACCELERATION") {
                     subscribe<AccelerationSliderValueChanged> {
-                        text = "Max Acceleration (rotations / sec ^ 2): ${it.newValue}"
+                        text = "Max Acceleration (rotations / second^2): ${it.newValue}"
                     }
                 }
                 slider(MIN_ACCELERATION, MAX_ACCELERATION, INITIAL_ACCELERATION) {
@@ -103,9 +103,9 @@ class SliderView : View() {
                 }
             }
             vbox {
-                label("Max Jerk (rotations / sec ^ 3): $INITIAL_JERK") {
+                label("Max Jerk (rotations / second^3): $INITIAL_JERK") {
                     subscribe<JerkSliderValueChanged> {
-                        text = "Max Jerk (rotations / sec ^ 3): ${it.newValue}"
+                        text = "Max Jerk (rotations / second^3): ${it.newValue}"
                     }
                 }
                 slider(MIN_JERK, MAX_JERK, INITIAL_JERK) {

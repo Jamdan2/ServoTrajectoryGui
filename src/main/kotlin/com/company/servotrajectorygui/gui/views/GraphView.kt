@@ -16,6 +16,8 @@ class GraphView : View() {
         hbox {
             scatterchart("Distance", NumberAxis(), NumberAxis()) {
                 addClass(Style.distanceChart)
+                xAxis.label = "seconds"
+                yAxis.label = "rotations"
                 setPrefSize(250.0, 250.0)
                 series("Distance") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {
@@ -31,6 +33,8 @@ class GraphView : View() {
             }
             scatterchart("Velocity", NumberAxis(), NumberAxis()) {
                 addClass(Style.velocityChart)
+                xAxis.label = "seconds"
+                yAxis.label = "rotations / second"
                 setPrefSize(250.0, 250.0)
                 series("Velocity") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {
@@ -48,6 +52,8 @@ class GraphView : View() {
         hbox {
             scatterchart("Acceleration", NumberAxis(), NumberAxis()) {
                 addClass(Style.accelerationChart)
+                xAxis.label = "seconds"
+                yAxis.label = "rotations / second^2"
                 setPrefSize(250.0, 250.0)
                 series("Acceleration") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {
@@ -63,6 +69,8 @@ class GraphView : View() {
             }
             scatterchart("Jerk", NumberAxis(), NumberAxis()) {
                 addClass(Style.jerkChart)
+                xAxis.label = "seconds"
+                yAxis.label = "rotations / second^3"
                 setPrefSize(250.0, 250.0)
                 series("Jerk") {
                     virtualTimer(trajectoryController.trajectory.t7, 0.01) {
