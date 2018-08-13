@@ -2,9 +2,13 @@ package com.company.servotrajectorygui.gui
 
 import tornadofx.View
 import tornadofx.addClass
+import tornadofx.onChange
 import tornadofx.vbox
+import kotlin.math.roundToInt
 
 class SliderView : View() {
+    private val trajectoryController by inject<TrajectoryController>()
+
     private val distanceSlider = find<ConstraintSlider>(mapOf(
             "constraintName" to "distance",
             "unitName" to "rotations",
@@ -40,6 +44,21 @@ class SliderView : View() {
             "initialValue" to 50,
             "format" to "%.3f"
     ))
+
+    init {
+        distanceSlider.valueProperty.onChange {
+            trajectoryController.configureDistance(it.roundToInt())
+        }
+        velocitySlider.valueProperty.onChange {
+            trajectoryController.configureVelocity(it)
+        }
+        accelerationSlider.valueProperty.onChange {
+            trajectoryController.configureAcceleration(it)
+        }
+        jerkSlider.valueProperty.onChange {
+            trajectoryController.configureJerk(it)
+        }
+    }
 
     override val root = vbox {
         addClass(Styles.spaced)
