@@ -5,7 +5,7 @@ import com.company.servotrajectorygui.trajectory.TrajectoryConfig
 import tornadofx.Controller
 
 class TrajectoryController : Controller() {
-    var trajectoryConfig = TrajectoryConfig(0, 0.0, 0.0, 0.0)
+    var trajectoryConfig = TrajectoryConfig(250, 50.0, 50.0, 50.0)
 
     var trajectory = Trajectory(trajectoryConfig)
 
