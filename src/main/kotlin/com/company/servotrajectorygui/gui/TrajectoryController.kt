@@ -44,4 +44,8 @@ class TrajectoryController : Controller() {
                 value
         )
     }
+
+    fun calculateTrajectory() {
+        trajectory = Trajectory(trajectoryConfig)
+    }
 }

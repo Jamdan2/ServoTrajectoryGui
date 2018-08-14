@@ -26,7 +26,7 @@ class ConstraintSlider : Fragment() {
         prefWidth = 500.0
         isShowTickMarks = true
         isShowTickLabels = true
-        //majorTickUnit = (maxValue!!.toDouble() - minValue!!.toDouble()) / 10
+        majorTickUnit = (maxValue!!.toDouble() - minValue!!.toDouble()) / 10
         minorTickCount = 10
     }
 
