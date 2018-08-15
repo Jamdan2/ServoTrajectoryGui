@@ -1,5 +1,6 @@
 package com.company.servotrajectorygui.gui
 
+import com.company.servotrajectorygui.*
 import tornadofx.View
 import tornadofx.addClass
 import tornadofx.onChange
@@ -12,36 +13,36 @@ class SliderView : View() {
     private val distanceSlider = find<ConstraintSlider>(mapOf(
             "constraintName" to "distance",
             "unitName" to "rotations",
-            "minValue" to 0,
-            "maxValue" to 500,
-            "initialValue" to 250,
+            "minValue" to MIN_DISTANCE,
+            "maxValue" to MAX_DISTANCE,
+            "initialValue" to INITIAL_DISTANCE,
             "format" to "%.0f"
     ))
 
     private val velocitySlider = find<ConstraintSlider>(mapOf(
-            "constraintName" to "velocity",
+            "constraintName" to "max velocity",
             "unitName" to "rotations / second",
-            "minValue" to 0,
-            "maxValue" to 100,
-            "initialValue" to 50,
+            "minValue" to MIN_VELOCITY,
+            "maxValue" to MAX_VELOCITY,
+            "initialValue" to INITIAL_VELOCITY,
             "format" to "%.3f"
     ))
 
     private val accelerationSlider = find<ConstraintSlider>(mapOf(
-            "constraintName" to "acceleration",
+            "constraintName" to "max acceleration",
             "unitName" to "rotations / second^2",
-            "minValue" to 0,
-            "maxValue" to 100,
-            "initialValue" to 50,
+            "minValue" to MIN_ACCELERATION,
+            "maxValue" to MAX_ACCELERATION,
+            "initialValue" to INITIAL_ACCELERATION,
             "format" to "%.3f"
     ))
 
     private val jerkSlider = find<ConstraintSlider>(mapOf(
-            "constraintName" to "jerk",
+            "constraintName" to "max jerk",
             "unitName" to "rotations / second^3",
-            "minValue" to 0,
-            "maxValue" to 100,
-            "initialValue" to 50,
+            "minValue" to MIN_JERK,
+            "maxValue" to MAX_JERK,
+            "initialValue" to INITIAL_JERK,
             "format" to "%.3f"
     ))
 

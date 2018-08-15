@@ -47,5 +47,6 @@ class TrajectoryController : Controller() {
 
     fun calculateTrajectory() {
         trajectory = Trajectory(trajectoryConfig)
+        fire(TrajectoryRecalculated)
     }
 }

@@ -4,6 +4,7 @@ import tornadofx.*
 
 class MainView : View("Servo Trajectory Gui") {
     override val root = borderpane {
+        padding = insets(10)
         addClass(Styles.spaced)
         left {
             vbox {
@@ -12,5 +13,6 @@ class MainView : View("Servo Trajectory Gui") {
                 add<PidView>()
             }
         }
+        right<GraphView>()
     }
 }

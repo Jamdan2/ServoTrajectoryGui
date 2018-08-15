@@ -17,17 +17,19 @@ class ArduinoController : Controller() {
 
     private var link: Link? = null
 
-    private val motorPin: Pin.AnalogPin = Pin.analogPin(9)
-    private val enablePin: Pin.DigitalPin = Pin.digitalPin(10)
-    private val sensorPin: Pin.AnalogPin = Pin.analogPin(0)
+    private val motorPin: Pin.AnalogPin = Pin.analogPin(MOTOR_PIN_NUM)
+    private val enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
+    private val sensorPin: Pin.AnalogPin = Pin.analogPin(SENSOR_PIN_NUM)
 
     var feedback = 0.0
 
     fun connect() {
         try {
-            if (link == null) link = Links.getDefault()
-            supplyMinimumVoltage()
-            listenToFeedback()
+            if (link == null) {
+                link = Links.getDefault()
+                supplyMinimumVoltage()
+                listenToFeedback()
+            }
         } catch (e: RuntimeException) {
             tornadofx.error(
                     "Failed to connect to Arduino.",
@@ -37,7 +39,7 @@ class ArduinoController : Controller() {
     }
 
     private fun supplyMinimumVoltage() {
-         link?.switchAnalogPin(motorPin, 3)
+         link?.switchAnalogPin(motorPin, 10)
     }
 
     private fun listenToFeedback() {
@@ -57,20 +59,21 @@ class ArduinoController : Controller() {
         connect()
         if (link != null) {
             launch {
-                link?.switchDigitalPin(enablePin, true)
+                link!!.switchDigitalPin(enablePin, true)
                 if (pidController.isPidUsed) {
                     val pid = Pid(pidController.pidConfig, 0.05)
                     val timer = timer(trajectoryController.trajectory.t7, 0.05) {
-                        link?.switchAnalogPin(motorPin, rpsToInputVoltage(pid.next(trajectoryController.trajectory.v(it), feedback)))
+                        link!!.switchAnalogPin(motorPin, rpsToInputVoltage(pid.next(trajectoryController.trajectory.v(it), feedback)))
                     }
                     timer.join()
                 } else {
+                    println("HJhkks")
                     val timer = timer(trajectoryController.trajectory.t7, 0.05) {
-                        link?.switchAnalogPin(motorPin, rpsToInputVoltage(trajectoryController.trajectory.v(it)))
+                        link!!.switchAnalogPin(motorPin, rpsToInputVoltage(trajectoryController.trajectory.v(it)))
                     }
                     timer.join()
                 }
-                link?.switchDigitalPin(enablePin, false)
+                link!!.switchDigitalPin(enablePin, false)
                 supplyMinimumVoltage()
             }
         }

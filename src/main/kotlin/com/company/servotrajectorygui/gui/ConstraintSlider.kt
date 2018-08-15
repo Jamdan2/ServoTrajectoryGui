@@ -2,6 +2,9 @@ package com.company.servotrajectorygui.gui
 
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleDoubleProperty
+import javafx.scene.layout.GridPane.setHgrow
+import javafx.scene.layout.GridPane.setVgrow
+import javafx.scene.layout.Priority
 import tornadofx.*
 
 class ConstraintSlider : Fragment() {
@@ -23,11 +26,11 @@ class ConstraintSlider : Fragment() {
                 Bindings.format(format, valueProperty())
         ))
         valueProperty.bindBidirectional(valueProperty())
-        prefWidth = 500.0
+        prefWidth = 500.1
         isShowTickMarks = true
         isShowTickLabels = true
         majorTickUnit = (maxValue!!.toDouble() - minValue!!.toDouble()) / 10
-        minorTickCount = 10
+        minorTickCount = 9
     }
 
     override val root = vbox {
