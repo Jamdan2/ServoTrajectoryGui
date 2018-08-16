@@ -12,6 +12,7 @@ class ConstraintGraph : Fragment() {
     private val constraintFunction: ((Double) -> Double)? by params
     private val graphStyles: CssRule? by params
     private val graphingMethod: GraphingMethod? by params
+    private val constraintUnit: String? by params
 
     enum class GraphingMethod {
         POINT_ITERATION,
@@ -64,6 +65,8 @@ class ConstraintGraph : Fragment() {
         createSymbols = false
         isLegendVisible = false
         animated = false
+        xAxis.label = "time"
+        yAxis.label = constraintUnit!!
         series(constraintName!!) {
             graph()
             subscribe<TrajectoryRecalculated> { graph() }
