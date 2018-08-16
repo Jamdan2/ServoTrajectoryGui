@@ -8,6 +8,7 @@ class MainView : View("Servo Trajectory Gui") {
         addClass(Styles.spaced)
         left {
             vbox {
+                addClass(Styles.spaced)
                 add<ControlsView>()
                 add<SliderView>()
                 add<PidView>()
