@@ -8,6 +8,8 @@ import javafx.scene.layout.Priority
 import tornadofx.*
 
 class ConstraintSlider : Fragment() {
+    val trajectoryController by inject<TrajectoryController>()
+
     val valueProperty = SimpleDoubleProperty(0.0)
     val value: Double get() = valueProperty.get()
 
@@ -31,6 +33,10 @@ class ConstraintSlider : Fragment() {
         isShowTickLabels = true
         majorTickUnit = (maxValue!!.toDouble() - minValue!!.toDouble()) / 10
         minorTickCount = 9
+        valueProperty().onChange {
+            if (it != 0.0)
+            trajectoryController.calculateTrajectory()
+        }
     }
 
     override val root = vbox {

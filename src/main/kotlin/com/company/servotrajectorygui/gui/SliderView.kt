@@ -48,16 +48,16 @@ class SliderView : View() {
 
     init {
         distanceSlider.valueProperty.onChange {
-            trajectoryController.configureDistance(it.roundToInt())
+            if (it > 0.0) trajectoryController.configureDistance(it.roundToInt())
         }
         velocitySlider.valueProperty.onChange {
-            trajectoryController.configureVelocity(it)
+            if (it > 0.0) trajectoryController.configureVelocity(it)
         }
         accelerationSlider.valueProperty.onChange {
-            trajectoryController.configureAcceleration(it)
+            if (it > 0.0) trajectoryController.configureAcceleration(it)
         }
         jerkSlider.valueProperty.onChange {
-            trajectoryController.configureJerk(it)
+            if (it > 0.0) trajectoryController.configureJerk(it)
         }
     }
 
