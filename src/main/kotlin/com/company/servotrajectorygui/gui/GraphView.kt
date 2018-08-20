@@ -3,15 +3,11 @@ package com.company.servotrajectorygui.gui
 import com.company.servotrajectorygui.roundTo
 import com.company.servotrajectorygui.trajectory.a
 import com.company.servotrajectorygui.trajectory.d
-import com.company.servotrajectorygui.trajectory.j
 import com.company.servotrajectorygui.trajectory.v
 import com.company.servotrajectorygui.virtualTimer
-import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.runBlocking
 import tornadofx.*
-import java.util.*
+import java.lang.Double.max
 
 class GraphView : View() {
     private val trajectoryController by inject<TrajectoryController>()
@@ -25,9 +21,9 @@ class GraphView : View() {
 
     private val graphVelocity: XYChart.Series<Number, Number>.() -> Unit = {
         virtualTimer(trajectoryController.trajectory.t7, trajectoryController.trajectory.t7 / 150) {
-            data(it, trajectoryController.trajectory.v(it))
+            data(it, max(0.0, trajectoryController.trajectory.v(it)))
         }
-        data(trajectoryController.trajectory.t7, trajectoryController.trajectory.v(trajectoryController.trajectory.t7))
+        data(trajectoryController.trajectory.t7, 0.0)
     }
 
     private val graphAcceleration: XYChart.Series<Number, Number>.() -> Unit = {
