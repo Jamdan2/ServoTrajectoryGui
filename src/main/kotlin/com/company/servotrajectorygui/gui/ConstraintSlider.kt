@@ -34,7 +34,7 @@ class ConstraintSlider : Fragment() {
         majorTickUnit = (maxValue!!.toDouble() - minValue!!.toDouble()) / 10
         minorTickCount = 9
         valueProperty().onChange {
-            if (it != 0.0)
+            if (it > 0.0)
             trajectoryController.calculateTrajectory()
         }
     }
