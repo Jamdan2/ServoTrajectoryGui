@@ -17,9 +17,9 @@ class ArduinoController : Controller() {
 
     private var link: Link? = null
 
-    private val motorPin: Pin.AnalogPin = Pin.analogPin(MOTOR_PIN_NUM)
-    private val enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
-    private val sensorPin: Pin.AnalogPin = Pin.analogPin(SENSOR_PIN_NUM)
+    var motorPin: Pin.AnalogPin = Pin.analogPin(MOTOR_PIN_NUM)
+    var enablePin: Pin.DigitalPin = Pin.digitalPin(ENABLE_PIN_NUM)
+    var sensorPin: Pin.AnalogPin = Pin.analogPin(SENSOR_PIN_NUM)
 
     var feedback = 0.0
 
