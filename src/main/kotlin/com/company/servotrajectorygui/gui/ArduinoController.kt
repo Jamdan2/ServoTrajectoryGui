@@ -67,7 +67,6 @@ class ArduinoController : Controller() {
                     }
                     timer.join()
                 } else {
-                    println("HJhkks")
                     val timer = timer(trajectoryController.trajectory.t7, 0.05) {
                         link!!.switchAnalogPin(motorPin, rpsToInputVoltage(trajectoryController.trajectory.v(it)))
                     }
