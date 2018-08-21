@@ -12,5 +12,10 @@ class ControlsView : View() {
                 arduinoController.runTrajectory()
             }
         }
+        button("settings") {
+            action {
+                find<SettingsModal>().openModal(resizable = false)
+            }
+        }
     }
 }
