@@ -4,9 +4,10 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlin.math.pow
 import kotlin.math.round
+import kotlin.math.roundToInt
 
-var minOutput = MIN_OUTPUT_PERCENTAGE * 0.01
-var maxOutput = MAX_OUTPUT_PERCENTAGE * 0.01
+var minInputVoltage = MIN_INPUT_VOLTAGE
+var maxInputVoltage = MAX_INPUT_VOLTAGE
 
 fun Double.root(n: Int): Double {
     if (n < 2) throw IllegalArgumentException("n must be more than 1")
@@ -43,6 +44,7 @@ fun timer(seconds: Double, tick: Double = 0.001, block: (Double) -> Unit) = laun
 fun Double.roundTo(decimalPlaces: Int) =
         round(this * 10.0.pow(decimalPlaces)) / 10.0.pow(decimalPlaces)
 
-fun rpsToInputVoltage(rps: Double) = (rps / 250 * 255 * (maxOutput - minOutput) + 255 * minOutput).toInt()
+fun rpsToInputVoltage(rps: Double) =
+        (rps / 250 * 255 * ((maxInputVoltage - minInputVoltage) / 5.0) + 255 * (minInputVoltage / 5.0)).roundToInt()
 
 fun outputVoltageToRps(voltage: Int) = voltage / 818.4 * 250

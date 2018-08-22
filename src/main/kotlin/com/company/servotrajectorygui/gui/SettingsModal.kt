@@ -39,23 +39,23 @@ class SettingsModal : Fragment("Settings") {
             }
         }
         hbox {
-            label("scale output: ")
-            textfield(settings.minOutputPercentage.toString()) {
+            label("scale input: ")
+            textfield(settings.minInputVoltage.toString()) {
                 prefWidth = 50.0
                 filterInput { it.controlNewText.isDouble() }
                 textProperty().onChange {
-                    if (it != null && it != "") settings = settings.copy(minOutputPercentage = it.toDouble())
+                    if (it != null && it != "") settings = settings.copy(minInputVoltage = it.toDouble())
                 }
             }
-            label("% to ")
-            textfield(settings.maxOutputPercentage.toString()) {
+            label("V to ")
+            textfield(settings.maxInputVoltage.toString()) {
                 prefWidth = 50.0
                 filterInput { it.controlNewText.isDouble() }
                 textProperty().onChange {
-                    if (it != null && it != "") settings = settings.copy(maxOutputPercentage = it.toDouble())
+                    if (it != null && it != "") settings = settings.copy(maxInputVoltage = it.toDouble())
                 }
             }
-            label("%")
+            label("V")
         }
         hbox {
             addClass(Styles.spaced)

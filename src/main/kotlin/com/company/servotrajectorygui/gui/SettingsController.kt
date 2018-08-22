@@ -11,8 +11,8 @@ class SettingsController : Controller() {
             ENABLE_PIN_NUM,
             MOTOR_PIN_NUM,
             SENSOR_PIN_NUM,
-            MIN_OUTPUT_PERCENTAGE,
-            MAX_OUTPUT_PERCENTAGE
+            MIN_INPUT_VOLTAGE,
+            MAX_INPUT_VOLTAGE
     )
 
     fun copySettings() = settings.copy()
@@ -24,7 +24,7 @@ class SettingsController : Controller() {
             motorPin = Pin.analogPin(settings.motorPinNum)
             sensorPin = Pin.analogPin(settings.sensorPinNum)
         }
-        minOutput = settings.minOutputPercentage * 0.01
-        maxOutput = settings.maxOutputPercentage * 0.01
+        minInputVoltage = settings.minInputVoltage
+        maxInputVoltage = settings.maxInputVoltage
     }
 }
