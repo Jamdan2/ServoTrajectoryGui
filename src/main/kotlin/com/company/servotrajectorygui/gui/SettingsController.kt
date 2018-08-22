@@ -1,9 +1,6 @@
 package com.company.servotrajectorygui.gui
 
-import com.company.servotrajectorygui.ENABLE_PIN_NUM
-import com.company.servotrajectorygui.MOTOR_PIN_NUM
-import com.company.servotrajectorygui.SENSOR_PIN_NUM
-import com.company.servotrajectorygui.Settings
+import com.company.servotrajectorygui.*
 import org.ardulink.core.Pin
 import tornadofx.Controller
 
@@ -13,7 +10,9 @@ class SettingsController : Controller() {
     private var settings = Settings(
             ENABLE_PIN_NUM,
             MOTOR_PIN_NUM,
-            SENSOR_PIN_NUM
+            SENSOR_PIN_NUM,
+            MIN_OUTPUT_PERCENTAGE,
+            MAX_OUTPUT_PERCENTAGE
     )
 
     fun copySettings() = settings.copy()
@@ -25,5 +24,7 @@ class SettingsController : Controller() {
             motorPin = Pin.analogPin(settings.motorPinNum)
             sensorPin = Pin.analogPin(settings.sensorPinNum)
         }
+        minOutput = settings.minOutputPercentage * 0.01
+        maxOutput = settings.maxOutputPercentage * 0.01
     }
 }

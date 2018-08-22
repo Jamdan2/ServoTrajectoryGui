@@ -3,6 +3,8 @@ package com.company.servotrajectorygui
 const val ENABLE_PIN_NUM = 8
 const val MOTOR_PIN_NUM = 9
 const val SENSOR_PIN_NUM = 0
+const val MIN_OUTPUT_PERCENTAGE = 10.0
+const val MAX_OUTPUT_PERCENTAGE = 90.0
 
 const val MIN_DISTANCE = 0
 const val INITIAL_DISTANCE = 250

@@ -39,6 +39,25 @@ class SettingsModal : Fragment("Settings") {
             }
         }
         hbox {
+            label("scale output: ")
+            textfield(settings.minOutputPercentage.toString()) {
+                prefWidth = 50.0
+                filterInput { it.controlNewText.isDouble() }
+                textProperty().onChange {
+                    if (it != null && it != "") settings = settings.copy(minOutputPercentage = it.toDouble())
+                }
+            }
+            label("% to ")
+            textfield(settings.maxOutputPercentage.toString()) {
+                prefWidth = 50.0
+                filterInput { it.controlNewText.isDouble() }
+                textProperty().onChange {
+                    if (it != null && it != "") settings = settings.copy(maxOutputPercentage = it.toDouble())
+                }
+            }
+            label("%")
+        }
+        hbox {
             addClass(Styles.spaced)
             button("okay") {
                 alignment = Pos.BOTTOM_RIGHT
