@@ -5,5 +5,7 @@ data class Settings(
         val motorPinNum: Int,
         val sensorPinNum: Int,
         val minInputVoltage: Double,
-        val maxInputVoltage: Double
+        val maxInputVoltage: Double,
+        val minOutputVoltage: Double,
+        val maxOutputVoltage: Double
 )

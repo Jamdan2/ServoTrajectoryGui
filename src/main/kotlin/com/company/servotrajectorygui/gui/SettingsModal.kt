@@ -58,6 +58,25 @@ class SettingsModal : Fragment("Settings") {
             label("V")
         }
         hbox {
+            label("scale output: ")
+            textfield(settings.minOutputVoltage.toString()) {
+                prefWidth = 50.0
+                filterInput { it.controlNewText.isDouble() }
+                textProperty().onChange {
+                    if (it != null && it != "") settings = settings.copy(minOutputVoltage = it.toDouble())
+                }
+            }
+            label("V to ")
+            textfield(settings.maxOutputVoltage.toString()) {
+                prefWidth = 50.0
+                filterInput { it.controlNewText.isDouble() }
+                textProperty().onChange {
+                    if (it != null && it != "") settings = settings.copy(maxOutputVoltage = it.toDouble())
+                }
+            }
+            label("V")
+        }
+        hbox {
             addClass(Styles.spaced)
             button("okay") {
                 alignment = Pos.BOTTOM_RIGHT

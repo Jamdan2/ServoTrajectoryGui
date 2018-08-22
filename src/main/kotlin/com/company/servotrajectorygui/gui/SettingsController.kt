@@ -12,7 +12,9 @@ class SettingsController : Controller() {
             MOTOR_PIN_NUM,
             SENSOR_PIN_NUM,
             MIN_INPUT_VOLTAGE,
-            MAX_INPUT_VOLTAGE
+            MAX_INPUT_VOLTAGE,
+            MIN_OUTPUT_VOLTAGE,
+            MAX_OUTPUT_VOLTAGE
     )
 
     fun copySettings() = settings.copy()
@@ -26,5 +28,7 @@ class SettingsController : Controller() {
         }
         minInputVoltage = settings.minInputVoltage
         maxInputVoltage = settings.maxInputVoltage
+        minOutputVoltage = settings.minOutputVoltage
+        maxOutputVoltage = settings.maxOutputVoltage
     }
 }

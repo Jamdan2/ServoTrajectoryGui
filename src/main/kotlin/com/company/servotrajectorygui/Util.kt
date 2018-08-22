@@ -9,6 +9,9 @@ import kotlin.math.roundToInt
 var minInputVoltage = MIN_INPUT_VOLTAGE
 var maxInputVoltage = MAX_INPUT_VOLTAGE
 
+var minOutputVoltage = MIN_OUTPUT_VOLTAGE
+var maxOutputVoltage = MAX_OUTPUT_VOLTAGE
+
 fun Double.root(n: Int): Double {
     if (n < 2) throw IllegalArgumentException("n must be more than 1")
     if (this <= 0.0) throw IllegalArgumentException("must be positive")
@@ -47,4 +50,5 @@ fun Double.roundTo(decimalPlaces: Int) =
 fun rpsToInputVoltage(rps: Double) =
         (rps / 250 * 255 * ((maxInputVoltage - minInputVoltage) / 5.0) + 255 * (minInputVoltage / 5.0)).roundToInt()
 
-fun outputVoltageToRps(voltage: Int) = voltage / 818.4 * 250
+fun outputVoltageToRps(voltage: Int) =
+        ((voltage - (1024 * (minOutputVoltage / 5))) / (1024 * ((maxOutputVoltage - minOutputVoltage) / 5))) * 250

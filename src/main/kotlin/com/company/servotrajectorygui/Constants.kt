@@ -5,6 +5,8 @@ const val MOTOR_PIN_NUM = 9
 const val SENSOR_PIN_NUM = 0
 const val MIN_INPUT_VOLTAGE = 0.5
 const val MAX_INPUT_VOLTAGE = 4.5
+const val MIN_OUTPUT_VOLTAGE = 0.0
+const val MAX_OUTPUT_VOLTAGE = 4.0
 
 const val MIN_DISTANCE = 0
 const val INITIAL_DISTANCE = 250
