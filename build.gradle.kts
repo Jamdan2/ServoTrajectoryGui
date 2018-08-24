@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "com.jamdan2.ServoTrajectoryGui"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     jcenter()
