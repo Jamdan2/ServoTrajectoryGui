@@ -33,7 +33,7 @@ dependencies {
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
-    baseName = "${project.name}-fat"
+    baseName = project.name
     manifest {
         attributes["Main-Class"] = "com.company.servotrajectorygui.MainKt"
     }
@@ -44,6 +44,16 @@ val fatJar = task("fatJar", type = Jar::class) {
     with(tasks["jar"] as CopySpec)
 }
 
+val distribute = task("distribute", type = Copy::class) {
+    from("build/libs") {
+        include("*.jar")
+    }
+    from(projectDir) {
+        include("README.md")
+    }
+    into("build/distributions/${project.name}-${project.version}")
+}
+
 tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
@@ -51,6 +61,11 @@ tasks {
 
     "build" {
         dependsOn(fatJar)
+    }
+
+    task("buildAndDistribute") {
+        dependsOn("build")
+        dependsOn(distribute)
     }
 }
 
